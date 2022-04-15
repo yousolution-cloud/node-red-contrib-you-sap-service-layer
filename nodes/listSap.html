@@ -1,0 +1,403 @@
+<script type="text/javascript">
+  RED.nodes.registerType('listSap',{
+    category: 'Sap',
+    color: '#FFC300',
+    defaults: {
+      name: {value: ''},
+      entity: {value: ''},
+      udo: {value: ''},
+      udt: {value: ''},
+      headers: {value: ''},
+      nextLink: {value: ''},
+      query: {value: 'query={};'}
+    },
+    inputs:1,
+    outputs:1,
+    icon: 'font-awesome/fa-cubes',
+    label: function() {
+      return this.name||"Sap list";
+    },
+    oneditprepare: function() {
+      this.editor = RED.editor.createEditor({
+        id: 'node-input-editor',
+        mode: 'ace/mode/javascript',
+        value: this.query
+      });
+
+      $("#node-input-headers").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-headers-type",
+        value: 'headers'
+      });
+
+      $("#node-input-nextLink").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-nextLink-type",
+        value: 'nextLink'
+      });
+
+      jQuery("#node-input-entity").change(function() {
+        if (jQuery(this).val() === 'UDO'){ 
+          jQuery('#container-udo').show();   
+        } else {
+          jQuery('#container-udo').hide(); 
+        }
+        if (jQuery(this).val() === 'UDT'){ 
+          jQuery('#container-udt').show();   
+        } else {
+          jQuery('#container-udt').hide(); 
+        }
+      });
+      
+    },
+    oneditsave: function() {
+      this.query = this.editor.getValue();
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditcancel: function() {
+      this.editor.destroy();
+      delete this.editor;
+    }
+  });
+</script>
+  
+<script type="text/html" data-template-name="listSap">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-comment"></i> Headers</label>
+    <input type="text" id="node-input-headers">
+    <input type="hidden" id="node-input-headers-type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-comment"></i> NextLink</label>
+    <input type="text" id="node-input-nextLink">
+    <input type="hidden" id="node-input-nextLink-type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-tag"></i> Entity</label>
+    <select name="node-input-entity" id="node-input-entity">
+      <option value="AccountCategory">AccountCategory</option>
+      <option value="AccountSegmentations">AccountSegmentations</option>
+      <option value="AccrualTypes">AccrualTypes</option>
+      <option value="Activities">Activities</option>
+      <option value="ActivityLocations">ActivityLocations</option>
+      <option value="ActivityRecipientLists">ActivityRecipientLists</option>
+      <option value="ActivityStatuses">ActivityStatuses</option>
+      <option value="ActivityTypes">ActivityTypes</option>
+      <option value="AdditionalExpenses">AdditionalExpenses</option>
+      <option value="AlertManagements">AlertManagements</option>
+      <option value="ApprovalRequests">ApprovalRequests</option>
+      <option value="ApprovalStages">ApprovalStages</option>
+      <option value="ApprovalTemplates">ApprovalTemplates</option>
+      <option value="AssetCapitalization">AssetCapitalization</option>
+      <option value="AssetCapitalizationCreditMemo">AssetCapitalizationCreditMemo</option>
+      <option value="AssetClasses">AssetClasses</option>
+      <option value="AssetDepreciationGroups">AssetDepreciationGroups</option>
+      <option value="AssetGroups">AssetGroups</option>
+      <option value="AssetManualDepreciation">AssetManualDepreciation</option>
+      <option value="AssetRetirement">AssetRetirement</option>
+      <option value="AssetTransfer">AssetTransfer</option>
+      <option value="Attachments2">Attachments2</option>
+      <option value="AttributeGroups">AttributeGroups</option>
+      <option value="BankChargesAllocationCodes">BankChargesAllocationCodes</option>
+      <option value="Banks">Banks</option>
+      <option value="BankStatements">BankStatements</option>
+      <option value="BarCodes">BarCodes</option>
+      <option value="BatchNumberDetails">BatchNumberDetails</option>
+      <option value="BillOfExchangeTransactions">BillOfExchangeTransactions</option>
+      <option value="BinLocationAttributes">BinLocationAttributes</option>
+      <option value="BinLocationFields">BinLocationFields</option>
+      <option value="BinLocations">BinLocations</option>
+      <option value="BlanketAgreements">BlanketAgreements</option>
+      <option value="BOEDocumentTypes">BOEDocumentTypes</option>
+      <option value="BOEInstructions">BOEInstructions</option>
+      <option value="BOEPortfolios">BOEPortfolios</option>
+      <option value="BPPriorities">BPPriorities</option>
+      <option value="Branches">Branches</option>
+      <option value="BrazilBeverageIndexers">BrazilBeverageIndexers</option>
+      <option value="BrazilFuelIndexers">BrazilFuelIndexers</option>
+      <option value="BrazilMultiIndexers">BrazilMultiIndexers</option>
+      <option value="BrazilNumericIndexers">BrazilNumericIndexers</option>
+      <option value="BrazilStringIndexers">BrazilStringIndexers</option>
+      <option value="BudgetDistributions">BudgetDistributions</option>
+      <option value="Budgets">Budgets</option>
+      <option value="BudgetScenarios">BudgetScenarios</option>
+      <option value="BusinessPartnerGroups">BusinessPartnerGroups</option>
+      <option value="BusinessPartnerProperties">BusinessPartnerProperties</option>
+      <option value="BusinessPartners">BusinessPartners</option>
+      <option value="BusinessPlaces">BusinessPlaces</option>
+      <option value="CampaignResponseType">CampaignResponseType</option>
+      <option value="Campaigns">Campaigns</option>
+      <option value="CashDiscounts">CashDiscounts</option>
+      <option value="CashFlowLineItems">CashFlowLineItems</option>
+      <option value="CertificateSeries">CertificateSeries</option>
+      <option value="ChartOfAccounts">ChartOfAccounts</option>
+      <option value="ChecksforPayment">ChecksforPayment</option>
+      <option value="ChooseFromList">ChooseFromList</option>
+      <option value="Cockpits">Cockpits</option>
+      <option value="CommissionGroups">CommissionGroups</option>
+      <option value="Contacts">Contacts</option>
+      <option value="ContractTemplates">ContractTemplates</option>
+      <option value="CorrectionInvoice">CorrectionInvoice</option>
+      <option value="CorrectionInvoiceReversal">CorrectionInvoiceReversal</option>
+      <option value="CorrectionPurchaseInvoice">CorrectionPurchaseInvoice</option>
+      <option value="CorrectionPurchaseInvoiceReversal">CorrectionPurchaseInvoiceReversal</option>
+      <option value="CostCenterTypes">CostCenterTypes</option>
+      <option value="CostElements">CostElements</option>
+      <option value="Countries">Countries</option>
+      <option value="CreditCardPayments">CreditCardPayments</option>
+      <option value="CreditCards">CreditCards</option>
+      <option value="CreditNotes">CreditNotes</option>
+      <option value="CreditPaymentMethods">CreditPaymentMethods</option>
+      <option value="Currencies">Currencies</option>
+      <option value="CustomerEquipmentCards">CustomerEquipmentCards</option>
+      <option value="CustomsDeclaration">CustomsDeclaration</option>
+      <option value="CustomsGroups">CustomsGroups</option>
+      <option value="CycleCountDeterminations">CycleCountDeterminations</option>
+      <option value="DeductionTaxGroups">DeductionTaxGroups</option>
+      <option value="DeductionTaxHierarchies">DeductionTaxHierarchies</option>
+      <option value="DeductionTaxSubGroups">DeductionTaxSubGroups</option>
+      <option value="DeliveryNotes">DeliveryNotes</option>
+      <option value="Departments">Departments</option>
+      <option value="Deposits">Deposits</option>
+      <option value="DepreciationAreas">DepreciationAreas</option>
+      <option value="DepreciationTypePools">DepreciationTypePools</option>
+      <option value="DepreciationTypes">DepreciationTypes</option>
+      <option value="DeterminationCriterias">DeterminationCriterias</option>
+      <option value="Dimensions">Dimensions</option>
+      <option value="DistributionRules">DistributionRules</option>
+      <option value="DNFCodeSetup">DNFCodeSetup</option>
+      <option value="DownPayments">DownPayments</option>
+      <option value="Drafts">Drafts</option>
+      <option value="DunningLetters">DunningLetters</option>
+      <option value="DunningTerms">DunningTerms</option>
+      <option value="ElectronicFileFormats">ElectronicFileFormats</option>
+      <option value="EmployeeIDType">EmployeeIDType</option>
+      <option value="EmployeePosition">EmployeePosition</option>
+      <option value="EmployeePosition">EmployeePosition</option>
+      <option value="EmployeeRolesSetup">EmployeeRolesSetup</option>
+      <option value="EmployeesInfo">EmployeesInfo</option>
+      <option value="EmployeeStatus">EmployeeStatus</option>
+      <option value="EmployeeTransfers">EmployeeTransfers</option>
+      <option value="EnhancedDiscountGroups">EnhancedDiscountGroups</option>
+      <option value="ExtendedTranslations">ExtendedTranslations</option>
+      <option value="FAAccountDeterminations">FAAccountDeterminations</option>
+      <option value="FactoringIndicators">FactoringIndicators</option>
+      <option value="FinancialYears">FinancialYears</option>
+      <option value="FiscalPrinter">FiscalPrinter</option>
+      <option value="FormattedSearches">FormattedSearches</option>
+      <option value="Forms1099">Forms1099</option>
+      <option value="GLAccountAdvancedRules">GLAccountAdvancedRules</option>
+      <option value="GoodsReturnRequest">GoodsReturnRequest</option>
+      <option value="GovPayCodes">GovPayCodes</option>
+      <option value="HouseBankAccounts">HouseBankAccounts</option>
+      <option value="IncomingPayments">IncomingPayments</option>
+      <option value="Industries">Industries</option>
+      <option value="IntegrationPackagesConfigure">IntegrationPackagesConfigure</option>
+      <option value="IntrastatConfiguration">IntrastatConfiguration</option>
+      <option value="InventoryCountings">InventoryCountings</option>
+      <option value="InventoryCycles">InventoryCycles</option>
+      <option value="InventoryGenEntries">InventoryGenEntries</option>
+      <option value="InventoryGenExits">InventoryGenExits</option>
+      <option value="InventoryOpeningBalances">InventoryOpeningBalances</option>
+      <option value="InventoryPostings">InventoryPostings</option>
+      <option value="InventoryTransferRequests">InventoryTransferRequests</option>
+      <option value="Invoices">Invoices</option>
+      <option value="ItemGroups">ItemGroups</option>
+      <option value="ItemProperties">ItemProperties</option>
+      <option value="Items">Items</option>
+      <option value="JournalEntries">JournalEntries</option>
+      <option value="JournalEntryDocumentTypes">JournalEntryDocumentTypes</option>
+      <option value="KnowledgeBaseSolutions">KnowledgeBaseSolutions</option>
+      <option value="KPIs">KPIs</option>
+      <option value="LandedCosts">LandedCosts</option>
+      <option value="LandedCostsCodes">LandedCostsCodes</option>
+      <option value="LegalData">LegalData</option>
+      <option value="LengthMeasures">LengthMeasures</option>
+      <option value="LocalEra">LocalEra</option>
+      <option value="Manufacturers">Manufacturers</option>
+      <option value="MaterialGroups">MaterialGroups</option>
+      <option value="MaterialRevaluation">MaterialRevaluation</option>
+      <option value="Messages">Messages</option>
+      <option value="MobileAddOnSetting">MobileAddOnSetting</option>
+      <option value="MultiLanguageTranslations">MultiLanguageTranslations</option>
+      <option value="NatureOfAssessees">NatureOfAssessees</option>
+      <option value="NCMCodesSetup">NCMCodesSetup</option>
+      <option value="NFModels">NFModels</option>
+      <option value="NFTaxCategories">NFTaxCategories</option>
+      <option value="OccurrenceCodes">OccurrenceCodes</option>
+      <option value="Orders">Orders</option>
+      <option value="PackagesTypes">PackagesTypes</option>
+      <option value="PartnersSetups">PartnersSetups</option>
+      <option value="PaymentBlocks">PaymentBlocks</option>
+      <option value="PaymentDrafts">PaymentDrafts</option>
+      <option value="PaymentRunExport">PaymentRunExport</option>
+      <option value="PaymentTermsTypes">PaymentTermsTypes</option>
+      <option value="PickLists">PickLists</option>
+      <option value="POSDailySummary">POSDailySummary</option>
+      <option value="PredefinedTexts">PredefinedTexts</option>
+      <option value="PriceLists">PriceLists</option>
+      <option value="ProductionOrders">ProductionOrders</option>
+      <option value="ProductTrees">ProductTrees</option>
+      <option value="ProfitCenters">ProfitCenters</option>
+      <option value="ProjectManagements">ProjectManagements</option>
+      <option value="ProjectManagementTimeSheet">ProjectManagementTimeSheet</option>
+      <option value="Projects">Projects</option>
+      <option value="PurchaseCreditNotes">PurchaseCreditNotes</option>
+      <option value="PurchaseDeliveryNotes">PurchaseDeliveryNotes</option>
+      <option value="PurchaseDownPayments">PurchaseDownPayments</option>
+      <option value="PurchaseInvoices">PurchaseInvoices</option>
+      <option value="PurchaseOrders">PurchaseOrders</option>
+      <option value="PurchaseQuotations">PurchaseQuotations</option>
+      <option value="PurchaseRequests">PurchaseRequests</option>
+      <option value="PurchaseReturns">PurchaseReturns</option>
+      <option value="PurchaseTaxInvoices">PurchaseTaxInvoices</option>
+      <option value="QueryAuthGroups">QueryAuthGroups</option>
+      <option value="QueryCategories">QueryCategories</option>
+      <option value="Queue">Queue</option>
+      <option value="Quotations">Quotations</option>
+      <option value="RecurringTransaction">RecurringTransaction</option>
+      <option value="Relationships">Relationships</option>
+      <option value="ReportFilter">ReportFilter</option>
+      <option value="ReportTypes">ReportTypes</option>
+      <option value="ResourceCapacities">ResourceCapacities</option>
+      <option value="ResourceGroups">ResourceGroups</option>
+      <option value="ResourceProperties">ResourceProperties</option>
+      <option value="Resources">Resources</option>
+      <option value="RetornoCodes">RetornoCodes</option>
+      <option value="ReturnRequest">ReturnRequest</option>
+      <option value="Returns">Returns</option>
+      <option value="RouteStages">RouteStages</option>
+      <option value="SalesForecast">SalesForecast</option>
+      <option value="SalesOpportunities">SalesOpportunities</option>
+      <option value="SalesOpportunityCompetitorsSetup">SalesOpportunityCompetitorsSetup</option>
+      <option value="SalesOpportunityInterestsSetup">SalesOpportunityInterestsSetup</option>
+      <option value="SalesOpportunityReasonsSetup">SalesOpportunityReasonsSetup</option>
+      <option value="SalesOpportunitySourcesSetup">SalesOpportunitySourcesSetup</option>
+      <option value="SalesPersons">SalesPersons</option>
+      <option value="SalesPersons">SalesStages</option>
+      <option value="SalesTaxAuthoritiesTypes">SalesTaxAuthoritiesTypes</option>
+      <option value="SalesTaxCodes">SalesTaxCodes</option>
+      <option value="SalesTaxInvoices">SalesTaxInvoices</option>
+      <option value="Sections">Sections</option>
+      <option value="SerialNumberDetails">SerialNumberDetails</option>
+      <option value="ServiceCallOrigins">ServiceCallOrigins</option>
+      <option value="ServiceCallProblemSubTypes">ServiceCallProblemSubTypes</option>
+      <option value="ServiceCallProblemTypes">ServiceCallProblemTypes</option>
+      <option value="ServiceCalls">ServiceCalls</option>
+      <option value="ServiceCallSolutionStatus">ServiceCallSolutionStatus</option>
+      <option value="ServiceCallStatus">ServiceCallStatus</option>
+      <option value="ServiceCallTypes">ServiceCallTypes</option>
+      <option value="ServiceContracts">ServiceContracts</option>
+      <option value="ServiceGroups">ServiceGroups</option>
+      <option value="ShippingTypes">ShippingTypes</option>
+      <option value="StockTransferDrafts">StockTransferDrafts</option>
+      <option value="StockTransfers">StockTransfers</option>
+      <option value="TargetGroups">TargetGroups</option>
+      <option value="TaxCodeDeterminations">TaxCodeDeterminations</option>
+      <option value="TaxCodeDeterminationsTCD">TaxCodeDeterminationsTCD</option>
+      <option value="TaxInvoiceReport">TaxInvoiceReport</option>
+      <option value="TaxWebSites">TaxWebSites</option>
+      <option value="Teams">Teams</option>
+      <option value="TerminationReason">TerminationReason</option>
+      <option value="Territories">Territories</option>
+      <option value="TrackingNotes">TrackingNotes</option>
+      <option value="TransactionCodes">TransactionCodes</option>
+      <option value="UnitOfMeasurementGroups">UnitOfMeasurementGroups</option>
+      <option value="UnitOfMeasurements">UnitOfMeasurements</option>
+      <option value="UserDefaultGroups">UserDefaultGroups</option>
+      <option value="UserLanguages">UserLanguages</option>
+      <option value="UserObjectsMD">UserObjectsMD</option>
+      <option value="UserPermissionTree">UserPermissionTree</option>
+      <option value="Users">Users</option>
+      <option value="UserTablesMD">UserTablesMD</option>
+      <option value="ValueMapping">ValueMapping</option>
+      <option value="ValueMappingCommunication">ValueMappingCommunication</option>
+      <option value="VendorPayments">VendorPayments</option>
+      <option value="VatGroups">VatGroups</option>
+      <option value="Warehouses">Warehouses</option>
+      <option value="WarehouseLocations">WarehouseLocations</option>
+      <option value="WarehouseSublevelCodes">WarehouseSublevelCodes</option>
+      <option value="WeightMeasures">WeightMeasures</option>
+      <option value="WithholdingTaxCodes">WithholdingTaxCodes</option>
+      <option value="WitholdingTaxDefinition">WitholdingTaxDefinition</option>
+      <option value="WizardPaymentMethods">WizardPaymentMethods</option>
+      <option value="WorkOrders">WorkOrders</option>
+      <option value="UDO">UDO</option>
+      <option value="UDT">UDT</option>
+    </select>
+  </div>
+
+  <div class="form-row" style="display:none" id="container-udo">
+    <label for="node-input-udo"><i class="fa fa-tag"></i> UDO</label>
+    <input type="text" id="node-input-udo" placeholder="UDO Name">
+  </div>
+
+  <div class="form-row" style="display:none" id="container-udt">
+    <label for="node-input-udt"><i class="fa fa-tag"></i> UDT</label>
+    <input type="text" id="node-input-udt" placeholder="UDT Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-editor"><i class="fa fa-database"></i> Query oData</label>
+    <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-editor"></div>
+  </div>
+</script>
+  
+<!-- Documentation -->
+<script type="text/html" data-help-name="listSap">
+  <p>List action</p>
+  
+  <h3>Inputs</h3>
+      <dl class="message-properties">
+          <dt>Name
+            <span class="property-type">string</span>
+          </dt>
+          <dd> the node's name </dd>
+          <dt>Entity
+            <span class="property-type">string</span>
+          </dt>
+          <dd> the entity name of SAP </dd>
+          <dt>query
+            <span class="property-type">string</span>
+          </dt>
+          <dd> query to filter the response of entity SAP </dd>
+      </dl>
+  
+   <h3>Outputs</h3>
+       <ol class="node-ports">
+           <li>Standard output
+               <dl class="message-properties">
+                   <dt>payload <span class="property-type">string</span></dt>
+                   <dd>the standard output of the command.</dd>
+               </dl>
+           </li>
+       </ol>
+  
+  <h3>Details</h3>
+      <p>this node is used to return a list of the entities from the SAP.
+        See the examples to understand how to use it.
+      </p>
+      <!-- <p><code>msg.payload</code> is used as the payload of the published message.
+      If it contains an Object it will be converted to a JSON string before being sent.
+      If it contains a binary Buffer the message will be published as-is.</p>
+      <p>The topic used can be configured in the node or, if left blank, can be set
+      by <code>msg.topic</code>.</p>
+      <p>Likewise the QoS and retain values can be configured in the node or, if left
+      blank, set by <code>msg.qos</code> and <code>msg.retain</code> respectively.</p> -->
+  
+  <h3>References</h3>
+      <ul>
+          <li><a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a> - for more details </li>
+          <li><a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer">@yousolution-cloud/node-red-contrib-you-sap-service-layer</a> - the nodes github repository</li>
+      </ul>
+</script>

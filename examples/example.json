@@ -1,0 +1,626 @@
+[
+  {
+      "id": "2b38c957604c963e",
+      "type": "tab",
+      "label": "Sap Service Layer",
+      "disabled": false,
+      "info": ""
+  },
+  {
+      "id": "7bc10473336cee5e",
+      "type": "inject",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "x": 140,
+      "y": 300,
+      "wires": [
+          [
+              "84c4d696e3c141c1"
+          ]
+      ]
+  },
+  {
+      "id": "47987b38c28c1d23",
+      "type": "debug",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 990,
+      "y": 300,
+      "wires": []
+  },
+  {
+      "id": "1b38e903df1dd9c6",
+      "type": "getSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "BusinessPartners",
+      "udo": "",
+      "entityId": "entityId",
+      "docEntry": "",
+      "headers": "myHeaders",
+      "query": "// query = msg.paramsQuery;",
+      "x": 700,
+      "y": 260,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "9cde2e06a4a797ec",
+      "type": "createSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "U_Items",
+      "udt": "",
+      "partnerName": "",
+      "scriptName": "",
+      "headers": "myHeaders",
+      "bodyPost": "bodyPost",
+      "x": 710,
+      "y": 380,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "7467f0b88fef7e44",
+      "type": "deleteSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "",
+      "entityId": "entityId",
+      "headers": "myHeaders",
+      "x": 710,
+      "y": 320,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "fb931e4efa318665",
+      "type": "patchSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "BusinessPartners",
+      "udo": "U_items",
+      "entityId": "entityId",
+      "headers": "myHeaders",
+      "bodyPatch": "bodyPatch",
+      "x": 700,
+      "y": 200,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "caaa38613a09de3b",
+      "type": "listSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "U_Items",
+      "udt": "",
+      "headers": "myHeaders",
+      "nextLink": "nextLink",
+      "query": "// query = {\n//   select: ['CardCode'],\n//   skip: 50000\n// };",
+      "x": 700,
+      "y": 440,
+      "wires": [
+          [
+              "47987b38c28c1d23",
+              "7a9b213982e4c6e6"
+          ]
+      ]
+  },
+  {
+      "id": "0f7c82bbd851d3f0",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "CrossJoin Parameters",
+      "func": "const filter = {\n  'Orders/CardCode': {\n      eq: {\n          type: 'raw',\n          value: `BusinessPartners/CardCode`\n          \n      }\n  }\n};\n\nconst expand = {\n  Orders: {\n    select: ['DocEntry', 'DocNum'],\n  },\n  BusinessPartners : {\n    select: ['CardCode', 'CardName'],\n  }\n};\n\nquery = {expand, filter, orderBy: ['CardCode desc']};\n\nmsg.crossJoin = query\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 500,
+      "y": 560,
+      "wires": [
+          [
+              "d887e5156e3dc77d"
+          ]
+      ]
+  },
+  {
+      "id": "dc938328d52c32d8",
+      "type": "closeSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "DeliveryNotes",
+      "entityId": "entityId",
+      "x": 700,
+      "y": 500,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "84c4d696e3c141c1",
+      "type": "authenticateSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "host": "srvsap02.dominione.local",
+      "port": "50000",
+      "version": "v1",
+      "credentials": {},
+      "x": 190,
+      "y": 380,
+      "wires": [
+          [
+              "e0d0bdefda2809a5"
+          ]
+      ]
+  },
+  {
+      "id": "2048ab555e57d629",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "parameters",
+      "func": "//msg.paramsQuery = {\n//  select: ['ItemCode', 'ItemName']\n//};\n\n//msg.bodyPost = {\n//    \"CardCode\": \"card01\"\n//}\n\nmsg.myHeaders = {\n    Prefer: \"odata.maxpagesize=5\"\n}\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 510,
+      "y": 440,
+      "wires": [
+          [
+              "caaa38613a09de3b"
+          ]
+      ]
+  },
+  {
+      "id": "d887e5156e3dc77d",
+      "type": "crossJoinSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "BusinessPartners,Orders",
+      "headers": "myHeaders",
+      "nextLink": "nextLink",
+      "query": "query = msg.crossJoin",
+      "x": 720,
+      "y": 560,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "7ae3f4c03d172c30",
+      "type": "nextLink",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "nextLink": "nextLink",
+      "x": 1140,
+      "y": 440,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "7a9b213982e4c6e6",
+      "type": "delay",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "pauseType": "delay",
+      "timeout": "3",
+      "timeoutUnits": "seconds",
+      "rate": "1",
+      "nbRateUnits": "1",
+      "rateUnits": "second",
+      "randomFirst": "1",
+      "randomLast": "5",
+      "randomUnits": "seconds",
+      "drop": false,
+      "allowrate": false,
+      "x": 960,
+      "y": 440,
+      "wires": [
+          [
+              "7ae3f4c03d172c30"
+          ]
+      ]
+  },
+  {
+      "id": "c7445f8acb20cf64",
+      "type": "catch",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "scope": null,
+      "uncaught": false,
+      "x": 200,
+      "y": 760,
+      "wires": [
+          [
+              "b5ef1bfdf637ee89"
+          ]
+      ]
+  },
+  {
+      "id": "b5ef1bfdf637ee89",
+      "type": "debug",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "error",
+      "targetType": "msg",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 320,
+      "y": 700,
+      "wires": []
+  },
+  {
+      "id": "2245c42c887404b4",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "get BP Params",
+      "func": "msg.entityId = '00002780435';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 500,
+      "y": 260,
+      "wires": [
+          [
+              "1b38e903df1dd9c6"
+          ]
+      ]
+  },
+  {
+      "id": "eda147127cc676b5",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "Create parameters",
+      "func": "msg.bodyPost = {\n \"ItemCode\": \"nodered001\",\n \"ItemName\": \"TestNodeRed1\",\n \"ItemType\": \"itItems\"\n}\n\nmsg.myHeaders = {\n    Prefer: \"odata.maxpagesize=5\"\n}\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 490,
+      "y": 380,
+      "wires": [
+          [
+              "9cde2e06a4a797ec"
+          ]
+      ]
+  },
+  {
+      "id": "276900e1e4088fc7",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "delete Items Params",
+      "func": "msg.entityId = \"nodered001\";\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 480,
+      "y": 320,
+      "wires": [
+          [
+              "7467f0b88fef7e44"
+          ]
+      ]
+  },
+  {
+      "id": "8f6d0b0c62e2f825",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "PATCH Params",
+      "func": "msg.entityId = '00002780435';\nmsg.bodyPatch = {\n    CardName: 'SIRA CUCINE COMPONIBILI'\n}\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 500,
+      "y": 200,
+      "wires": [
+          [
+              "fb931e4efa318665"
+          ]
+      ]
+  },
+  {
+      "id": "51b7be3dea20e190",
+      "type": "comment",
+      "z": "2b38c957604c963e",
+      "name": "Error handling",
+      "info": "Handle error",
+      "x": 110,
+      "y": 720,
+      "wires": []
+  },
+  {
+      "id": "0d0e40f49ddb089e",
+      "type": "comment",
+      "z": "2b38c957604c963e",
+      "name": "Connects the node you wish to test. \\n Remember to set the data required for the connection \\n and the various parameters on the nodes.",
+      "info": "",
+      "x": 200,
+      "y": 180,
+      "wires": []
+  },
+  {
+      "id": "f9f63d795fe7d667",
+      "type": "listSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "UDO",
+      "udo": "IEO_LPN_RISORSE",
+      "headers": "myHeaders",
+      "nextLink": "nextLink",
+      "query": "// query = {\n//   select: ['CardCode'],\n//   skip: 50000\n// };",
+      "x": 700,
+      "y": 620,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "5ddd481c44be7f85",
+      "type": "getSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "UDT",
+      "udo": "IEO_LPN_RISORSE",
+      "udt": "IEO_LPN_RISORSE",
+      "entityId": "entityId",
+      "docEntry": "DocEntry",
+      "code": "Code",
+      "headers": "myHeaders",
+      "query": "// query = msg.paramsQuery;",
+      "x": 700,
+      "y": 680,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "d48327e1d4277ba4",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "get BP Params",
+      "func": "msg.Code = '001';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 520,
+      "y": 680,
+      "wires": [
+          [
+              "5ddd481c44be7f85"
+          ]
+      ]
+  },
+  {
+      "id": "f8d4de354b8696d3",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "Create parameters",
+      "func": "msg.bodyPost = {\n \"ItemCode\": \"nodered001\",\n \"ItemName\": \"TestNodeRed1\",\n \"BarCode\": \"978020137962\"\n}\n\nmsg.myHeaders = {\n    Prefer: \"odata.maxpagesize=5\"\n}\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 510,
+      "y": 780,
+      "wires": [
+          [
+              "6a1df45aed7e2781"
+          ]
+      ]
+  },
+  {
+      "id": "6a1df45aed7e2781",
+      "type": "createSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "U_Items",
+      "udt": "",
+      "partnerName": "",
+      "scriptName": "",
+      "headers": "myHeaders",
+      "bodyPost": "bodyPost",
+      "x": 690,
+      "y": 780,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "3c830bb0efd613d1",
+      "type": "getSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "",
+      "udt": "",
+      "entityId": "entityId",
+      "docEntry": "",
+      "code": "",
+      "headers": "myHeaders",
+      "query": "// query = msg.paramsQuery;",
+      "x": 680,
+      "y": 920,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "a9d94fa2a7a44837",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "get BP Params",
+      "func": "msg.entityId = 'nodered001';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 480,
+      "y": 920,
+      "wires": [
+          [
+              "3c830bb0efd613d1"
+          ]
+      ]
+  },
+  {
+      "id": "1d8a552be83ad51a",
+      "type": "deleteSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "Items",
+      "udo": "",
+      "entityId": "entityId",
+      "headers": "myHeaders",
+      "x": 710,
+      "y": 1000,
+      "wires": [
+          [
+              "47987b38c28c1d23"
+          ]
+      ]
+  },
+  {
+      "id": "e0d0bdefda2809a5",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "delete Items Params",
+      "func": "msg.entityId = \"ctest0001\";\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 480,
+      "y": 1000,
+      "wires": [
+          [
+              "1d8a552be83ad51a"
+          ]
+      ]
+  },
+  {
+      "id": "2c13665355baa655",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "func": "\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 190,
+      "y": 560,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "1121920884466e30",
+      "type": "getSap",
+      "z": "2b38c957604c963e",
+      "name": "",
+      "entity": "UDT",
+      "udo": "IEO_LPN_RISORSE",
+      "udt": "IEO_LPN_RISORSE",
+      "entityId": "entityId",
+      "docEntry": "DocEntry",
+      "code": "Code",
+      "headers": "myHeaders",
+      "query": "// query = msg.paramsQuery;",
+      "x": 1100,
+      "y": 1220,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "a62c916019dd3d52",
+      "type": "function",
+      "z": "2b38c957604c963e",
+      "name": "get BP Params",
+      "func": "msg.Code = '001';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 920,
+      "y": 1220,
+      "wires": [
+          [
+              "1121920884466e30"
+          ]
+      ]
+  }
+]

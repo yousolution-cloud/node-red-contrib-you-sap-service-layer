@@ -1,0 +1,389 @@
+<script type="text/javascript">
+  RED.nodes.registerType('crossJoinSap',{
+    category: 'Sap',
+    color: '#FFC300',
+    defaults: {
+      name: {value: ''},
+      entity: {value: ''},
+      headers: {value: ''},
+      nextLink: {value: ''},
+      query: {value: 'query={};'}
+    },
+    inputs:1,
+    outputs:1,
+    icon: 'font-awesome/fa-compress',
+    label: function() {
+      return this.name||"Sap CrossJoin";
+    },
+    oneditprepare: function() {
+      this.editor = RED.editor.createEditor({
+        id: 'node-input-editor',
+        mode: 'ace/mode/javascript',
+        value: this.query
+      });
+
+      $("#node-input-headers").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-headers-type",
+        value: 'headers'
+      });
+
+      $("#node-input-nextLink").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-nextLink-type",
+        value: 'nextLink'
+      });
+
+      $("#node-input-entity").typedInput({
+        types: [{
+          value: "entity",
+          multiple: "true",
+          options: [
+
+            { value: "AccountCategory", label: "AccountCategory"},
+            { value: "AccountSegmentations", label: "AccountSegmentations"},
+            { value: "AccrualTypes", label: "AccrualTypes"},
+            { value: "Activities", label: "Activities"},
+            { value: "ActivityLocations", label: "ActivityLocations"},
+            { value: "ActivityRecipientLists", label: "ActivityRecipientLists"},
+            { value: "ActivityStatuses", label: "ActivityStatuses"},
+            { value: "ActivityTypes", label: "ActivityTypes"},
+            { value: "AdditionalExpenses", label: "AdditionalExpenses"},
+            { value: "AlertManagements", label: "AlertManagements"},
+            { value: "ApprovalRequests", label: "ApprovalRequests"},
+            { value: "ApprovalStages", label: "ApprovalStages"},
+            { value: "ApprovalTemplates", label: "ApprovalTemplates"},
+            { value: "AssetCapitalization", label: "AssetCapitalization"},
+            { value: "AssetCapitalizationCreditMemo", label: "AssetCapitalizationCreditMemo"},
+            { value: "AssetClasses", label: "AssetClasses"},
+            { value: "AssetDepreciationGroups", label: "AssetDepreciationGroups"},
+            { value: "AssetGroups", label: "AssetGroups"},
+            { value: "AssetManualDepreciation", label: "AssetManualDepreciation"},
+            { value: "AssetRetirement", label: "AssetRetirement"},
+            { value: "AssetTransfer", label: "AssetTransfer"},
+            { value: "Attachments2", label: "Attachments2"},
+            { value: "AttributeGroups", label: "AttributeGroups"},
+            { value: "BankChargesAllocationCodes", label: "BankChargesAllocationCodes"},
+            { value: "Banks", label: "Banks"},
+            { value: "BankStatements", label: "BankStatements"},
+            { value: "BarCodes", label: "BarCodes"},
+            { value: "BatchNumberDetails", label: "BatchNumberDetails"},
+            { value: "BillOfExchangeTransactions", label: "BillOfExchangeTransactions"},
+            { value: "BinLocationAttributes", label: "BinLocationAttributes"},
+            { value: "BinLocationFields", label: "BinLocationFields"},
+            { value: "BinLocations", label: "BinLocations"},
+            { value: "BlanketAgreements", label: "BlanketAgreements"},
+            { value: "BOEDocumentTypes", label: "BOEDocumentTypes"},
+            { value: "BOEInstructions", label: "BOEInstructions"},
+            { value: "BOEPortfolios", label: "BOEPortfolios"},
+            { value: "BPPriorities", label: "BPPriorities"},
+            { value: "Branches", label: "Branches"},
+            { value: "BrazilBeverageIndexers", label: "BrazilBeverageIndexers"},
+            { value: "BrazilFuelIndexers", label: "BrazilFuelIndexers"},
+            { value: "BrazilMultiIndexers", label: "BrazilMultiIndexers"},
+            { value: "BrazilNumericIndexers", label: "BrazilNumericIndexers"},
+            { value: "BrazilStringIndexers", label: "BrazilStringIndexers"},
+            { value: "BudgetDistributions", label: "BudgetDistributions"},
+            { value: "Budgets", label: "Budgets"},
+            { value: "BudgetScenarios", label: "BudgetScenarios"},
+            { value: "BusinessPartnerGroups", label: "BusinessPartnerGroups"},
+            { value: "BusinessPartnerProperties", label: "BusinessPartnerProperties"},
+            { value: "BusinessPartners", label: "BusinessPartners"},
+            { value: "BusinessPlaces", label: "BusinessPlaces"},
+            { value: "CampaignResponseType", label: "CampaignResponseType"},
+            { value: "Campaigns", label: "Campaigns"},
+            { value: "CashDiscounts", label: "CashDiscounts"},
+            { value: "CashFlowLineItems", label: "CashFlowLineItems"},
+            { value: "CertificateSeries", label: "CertificateSeries"},
+            { value: "ChartOfAccounts", label: "ChartOfAccounts"},
+            { value: "ChecksforPayment", label: "ChecksforPayment"},
+            { value: "ChooseFromList", label: "ChooseFromList"},
+            { value: "Cockpits", label: "Cockpits"},
+            { value: "CommissionGroups", label: "CommissionGroups"},
+            { value: "Contacts", label: "Contacts"},
+            { value: "ContractTemplates", label: "ContractTemplates"},
+            { value: "CorrectionInvoice", label: "CorrectionInvoice"},
+            { value: "CorrectionInvoiceReversal", label: "BusinessPartners"},
+            { value: "CorrectionPurchaseInvoice", label: "CorrectionPurchaseInvoice"},
+            { value: "CorrectionPurchaseInvoiceReversal", label: "CorrectionPurchaseInvoiceReversal"},
+            { value: "CostCenterTypes", label: "CostCenterTypes"},
+            { value: "CostElements", label: "CostElements"},
+            { value: "Countries", label: "Countries"},
+            { value: "CreditCardPayments", label: "CreditCardPayments"},
+            { value: "CreditCards", label: "CreditCards"},
+            { value: "CreditNotes", label: "CreditNotes"},
+            { value: "CreditPaymentMethods", label: "CreditPaymentMethods"},
+            { value: "Currencies", label: "Currencies"},
+            { value: "CustomerEquipmentCards", label: "CustomerEquipmentCards"},
+            { value: "CustomsDeclaration", label: "CustomsDeclaration"},
+            { value: "CustomsGroups", label: "CustomsGroups"},
+            { value: "CycleCountDeterminations", label: "CycleCountDeterminations"},
+            { value: "DeductionTaxGroups", label: "DeductionTaxGroups"},
+            { value: "DeductionTaxHierarchies", label: "DeductionTaxHierarchies"},
+            { value: "DeductionTaxSubGroups", label: "DeductionTaxSubGroups"},
+            { value: "DeliveryNotes", label: "DeliveryNotes"},
+            { value: "Departments", label: "Departments"},
+            { value: "Deposits", label: "Deposits"},
+            { value: "DepreciationAreas", label: "DepreciationAreas"},
+            { value: "DepreciationTypePools", label: "DepreciationTypePools"},
+            { value: "DepreciationTypes", label: "DepreciationTypes"},
+            { value: "DeterminationCriterias", label: "DeterminationCriterias"},
+            { value: "Dimensions", label: "Dimensions"},
+            { value: "DistributionRules", label: "DistributionRules"},
+            { value: "DNFCodeSetup", label: "DNFCodeSetup"},
+            { value: "DownPayments", label: "DownPayments"},
+            { value: "Drafts", label: "Drafts"},
+            { value: "DunningLetters", label: "DunningLetters"},
+            { value: "DunningTerms", label: "DunningTerms"},
+            { value: "ElectronicFileFormats", label: "ElectronicFileFormats"},
+            { value: "EmailGroups", label: "EmailGroups"},
+            { value: "EmployeeIDType", label: "EmployeeIDType"},
+            { value: "EmployeePosition", label: "EmployeePosition"},
+            { value: "EmployeeRolesSetup", label: "EmployeeRolesSetup"},
+            { value: "EmployeesInfo", label: "EmployeesInfo"},
+            { value: "EmployeeStatus", label: "EmployeeStatus"},
+            { value: "EmployeeTransfers", label: "EmployeeTransfers"},
+            { value: "EnhancedDiscountGroups", label: "EnhancedDiscountGroups"},
+            { value: "ExtendedTranslations", label: "ExtendedTranslations"},
+            { value: "FAAccountDeterminations", label: "FAAccountDeterminations"},
+            { value: "FactoringIndicators", label: "FactoringIndicators"},
+            { value: "FinancialYears", label: "FinancialYears"},
+            { value: "FiscalPrinter", label: "FiscalPrinter"},
+            { value: "FormattedSearches", label: "FormattedSearches"},
+            { value: "Forms1099", label: "Forms1099"},
+            { value: "GLAccountAdvancedRules", label: "GLAccountAdvancedRules"},
+            { value: "GoodsReturnRequest", label: "GoodsReturnRequest"},
+            { value: "GovPayCodes", label: "GovPayCodes"},
+            { value: "HouseBankAccounts", label: "HouseBankAccounts"},
+            { value: "IncomingPayments", label: "IncomingPayments"},
+            { value: "Industries", label: "Industries"},
+            { value: "IntegrationPackagesConfigure", label: "IntegrationPackagesConfigure"},
+            { value: "InternalReconciliations", label: "InternalReconciliations"},
+            { value: "IntrastatConfiguration", label: "IntrastatConfiguration"},
+            { value: "InventoryCountings", label: "InventoryCountings"},
+            { value: "InventoryCycles", label: "InventoryCycles"},
+            { value: "InventoryGenEntries", label: "InventoryGenEntries"},
+            { value: "InventoryGenExits", label: "InventoryGenExits"},
+            { value: "InventoryOpeningBalances", label: "InventoryOpeningBalances"},
+            { value: "InventoryPostings", label: "InventoryPostings"},
+            { value: "InventoryTransferRequests", label: "InventoryTransferRequests"},
+            { value: "Invoices", label: "Invoices"},
+            { value: "ItemGroups", label: "ItemGroups"},
+            { value: "ItemImages", label: "ItemImages"},
+            { value: "ItemProperties", label: "ItemProperties"},
+            { value: "Items", label: "Items"},
+            { value: "JournalEntries", label: "JournalEntries"},
+            { value: "JournalEntryDocumentTypes", label: "JournalEntryDocumentTypes"},
+            { value: "KnowledgeBaseSolutions", label: "KnowledgeBaseSolutions"},
+            { value: "KPIs", label: "KPIs"},
+            { value: "LandedCosts", label: "LandedCosts"},
+            { value: "LandedCostsCodes", label: "LandedCostsCodes"},
+            { value: "LegalData", label: "LegalData"},
+            { value: "LengthMeasures", label: "LengthMeasures"},
+            { value: "LocalEra", label: "LocalEra"},
+            { value: "Manufacturers", label: "Manufacturers"},
+            { value: "MaterialGroups", label: "MaterialGroups"},
+            { value: "MaterialRevaluation", label: "MaterialRevaluation"},
+            { value: "Messages", label: "Messages"},
+            { value: "MobileAddOnSetting", label: "MobileAddOnSetting"},
+            { value: "MultiLanguageTranslations", label: "MultiLanguageTranslations"},
+            { value: "NatureOfAssessees", label: "NatureOfAssessees"},
+            { value: "NCMCodesSetup", label: "NCMCodesSetup"},
+            { value: "NFModels", label: "NFModels"},
+            { value: "NFTaxCategories", label: "NFTaxCategories"},
+            { value: "OccurrenceCodes", label: "OccurrenceCodes"},
+            { value: "Orders", label: "Orders"},
+            { value: "PackagesTypes", label: "PackagesTypes"},
+            { value: "PartnersSetups", label: "PartnersSetups"},
+            { value: "PaymentBlocks", label: "PaymentBlocks"},
+            { value: "PaymentDrafts", label: "PaymentDrafts"},
+            { value: "PaymentRunExport", label: "PaymentRunExport"},
+            { value: "PaymentTermsTypes", label: "PaymentTermsTypes"},
+            { value: "PickLists", label: "PickLists"},
+            { value: "POSDailySummary", label: "POSDailySummary"},
+            { value: "PredefinedTexts", label: "PredefinedTexts"},
+            { value: "PriceLists", label: "PriceLists"},
+            { value: "ProductionOrders", label: "ProductionOrders"},
+            { value: "ProductTrees", label: "ProductTrees"},
+            { value: "ProfitCenters", label: "ProfitCenters"},
+            { value: "ProjectManagements", label: "ProjectManagements"},
+            { value: "ProjectManagementTimeSheet", label: "ProjectManagementTimeSheet"},
+            { value: "Projects", label: "Projects"},
+            { value: "PurchaseCreditNotes", label: "PurchaseCreditNotes"},
+            { value: "PurchaseDeliveryNotes", label: "PurchaseDeliveryNotes"},
+            { value: "PurchaseDownPayments", label: "PurchaseDownPayments"},
+            { value: "PurchaseInvoices", label: "PurchaseInvoices"},
+            { value: "PurchaseOrders", label: "PurchaseOrders"},
+            { value: "PurchaseQuotations", label: "PurchaseQuotations"},
+            { value: "PurchaseRequests", label: "PurchaseRequests"},
+            { value: "PurchaseReturns", label: "PurchaseReturns"},
+            { value: "PurchaseTaxInvoices", label: "PurchaseTaxInvoices"},
+            { value: "QueryAuthGroups", label: "QueryAuthGroups"},
+            { value: "QueryCategories", label: "QueryCategories"},
+            { value: "Queue", label: "Queue"},
+            { value: "Quotations", label: "Quotations"},
+            { value: "RecurringTransaction", label: "RecurringTransaction"},
+            { value: "Relationships", label: "Relationships"},
+            { value: "ReportFilter", label: "ReportFilter"},
+            { value: "ReportTypes", label: "ReportTypes"},
+            { value: "ResourceCapacities", label: "ResourceCapacities"},
+            { value: "ResourceGroups", label: "ResourceGroups"},
+            { value: "ResourceProperties", label: "ResourceProperties"},
+            { value: "Resources", label: "Resources"},
+            { value: "RetornoCodes", label: "RetornoCodes"},
+            { value: "ReturnRequest", label: "ReturnRequest"},
+            { value: "Returns", label: "Returns"},
+            { value: "RouteStages", label: "RouteStages"},
+            { value: "SalesForecast", label: "SalesForecast"},
+            { value: "SalesOpportunities", label: "SalesOpportunities"},
+            { value: "SalesOpportunityCompetitorsSetup", label: "SalesOpportunityCompetitorsSetup"},
+            { value: "SalesOpportunityInterestsSetup", label: "SalesOpportunityInterestsSetup"},
+            { value: "SalesOpportunityReasonsSetup", label: "SalesOpportunityReasonsSetup"},
+            { value: "SalesOpportunitySourcesSetup", label: "SalesOpportunitySourcesSetup"},
+            { value: "SalesPersons", label: "SalesPersons"},
+            { value: "SalesPersons", label: "SalesPersons"},
+            { value: "SalesTaxAuthoritiesTypes", label: "SalesTaxAuthoritiesTypes"},
+            { value: "SalesTaxCodes", label: "SalesTaxCodes"},
+            { value: "SalesTaxInvoices", label: "SalesTaxInvoices"},
+            { value: "Sections", label: "Sections"},
+            { value: "SerialNumberDetails", label: "SerialNumberDetails"},
+            { value: "ServiceCallOrigins", label: "ServiceCallOrigins"},
+            { value: "ServiceCallProblemSubTypes", label: "ServiceCallProblemSubTypes"},
+            { value: "ServiceCallProblemTypes", label: "ServiceCallProblemTypes"},
+            { value: "ServiceCalls", label: "ServiceCalls"},
+            { value: "ServiceCallSolutionStatus", label: "ServiceCallSolutionStatus"},
+            { value: "ServiceCallStatus", label: "ServiceCallStatus"},
+            { value: "ServiceCallTypes", label: "ServiceCallTypes"},
+            { value: "ServiceContracts", label: "ServiceContracts"},
+            { value: "ServiceGroups", label: "ServiceGroups"},
+            { value: "ShippingTypes", label: "ShippingTypes"},
+            { value: "StockTransferDrafts", label: "StockTransferDrafts"},
+            { value: "StockTransfers", label: "StockTransfers"},
+            { value: "StockTransfers", label: "StockTransfers"},
+            { value: "TargetGroups", label: "TargetGroups"},
+            { value: "TaxCodeDeterminations", label: "TaxCodeDeterminations"},
+            { value: "TaxCodeDeterminationsTCD", label: "TaxCodeDeterminationsTCD"},
+            { value: "TaxInvoiceReport", label: "TaxInvoiceReport"},
+            { value: "TaxWebSites", label: "TaxWebSites"},
+            { value: "Teams", label: "Teams"},
+            { value: "TerminationReason", label: "TerminationReason"},
+            { value: "Territories", label: "Territories"},
+            { value: "TrackingNotes", label: "TrackingNotes"},
+            { value: "TransactionCodes", label: "TransactionCodes"},
+            { value: "UnitOfMeasurementGroups", label: "BusinessPartners"},
+            { value: "UnitOfMeasurements", label: "UnitOfMeasurements"},
+            { value: "UserDefaultGroups", label: "UserDefaultGroups"},
+            { value: "UserLanguages", label: "UserLanguages"},
+            { value: "UserObjectsMD", label: "UserObjectsMD"},
+            { value: "UserPermissionTree", label: "UserPermissionTree"},
+            { value: "Users", label: "Users"},
+            { value: "UserTablesMD", label: "UserTablesMD"},
+            { value: "ValueMapping", label: "ValueMapping"},
+            { value: "ValueMappingCommunication", label: "ValueMappingCommunication"},
+            { value: "VatGroups", label: "VatGroups"},
+            { value: "VendorPayments", label: "VendorPayments"},
+            { value: "Warehouses", label: "Warehouses"},
+            { value: "WarehouseLocations", label: "WarehouseLocations"},
+            { value: "WarehouseSublevelCodes", label: "WarehouseSublevelCodes"},
+            { value: "WeightMeasures", label: "WeightMeasures"},
+            { value: "WithholdingTaxCodes", label: "WithholdingTaxCodes"},
+            { value: "WitholdingTaxDefinition", label: "WitholdingTaxDefinition"},
+            { value: "WizardPaymentMethods", label: "WizardPaymentMethods"},
+            { value: "WorkOrders", label: "WorkOrders"},
+            { value: "UDO", label: "UDO"},
+            { value: "UDT", label: "UDT"},
+          ]}
+        ]
+      })
+    },
+    oneditsave: function() {
+      this.query = this.editor.getValue();
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditcancel: function() {
+      this.editor.destroy();
+      delete this.editor;
+    }
+  });
+</script>
+  
+<script type="text/html" data-template-name="crossJoinSap">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-entity"><i class="fa fa-check-square-o"></i> Entity</label>
+    <input type="text" id="node-input-entity">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-comment"></i> Headers</label>
+    <input type="text" id="node-input-headers">
+    <input type="hidden" id="node-input-headers-type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-comment"></i> NextLink</label>
+    <input type="text" id="node-input-nextLink">
+    <input type="hidden" id="node-input-nextLink-type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-editor"><i class="fa fa-database"></i> Query oData</label>
+    <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-editor"></div>
+  </div>
+</script>
+  
+<!-- Documentation -->
+<script type="text/html" data-help-name="crossJoinSap">
+  <p>Cross join action</p>
+  
+  <h3>Inputs</h3>
+      <dl class="message-properties">
+          <dt>Name
+            <span class="property-type">string</span>
+          </dt>
+          <dd> the node's name </dd>
+          <dt>Entity
+            <span class="property-type">string</span>
+          </dt>
+          <dd> entity </dd>
+          <dt>query
+            <span class="property-type">string</span>
+          </dt>
+          <dd> query to execute the cross join  </dd>
+      </dl>
+  
+   <h3>Outputs</h3>
+       <ol class="node-ports">
+           <li>Standard output
+               <dl class="message-properties">
+                   <dt>payload <span class="property-type">string</span></dt>
+                   <dd>the standard output of the command.</dd>
+               </dl>
+           </li>
+       </ol>
+  
+  <h3>Details</h3>
+      <p>this node is used to close the entity of SAP resource.
+        See the examples to understand how to use it.
+      </p>
+      <!-- <p><code>msg.payload</code> is used as the payload of the published message.
+      If it contains an Object it will be converted to a JSON string before being sent.
+      If it contains a binary Buffer the message will be published as-is.</p>
+      <p>The topic used can be configured in the node or, if left blank, can be set
+      by <code>msg.topic</code>.</p>
+      <p>Likewise the QoS and retain values can be configured in the node or, if left
+      blank, set by <code>msg.qos</code> and <code>msg.retain</code> respectively.</p> -->
+  
+  <h3>References</h3>
+      <ul>
+          <li><a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a> - for more details </li>
+          <li><a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer">@yousolution-cloud/node-red-contrib-you-sap-service-layer</a> - the nodes github repository</li>
+      </ul>
+</script>

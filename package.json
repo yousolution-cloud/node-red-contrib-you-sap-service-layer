@@ -1,0 +1,56 @@
+{
+  "name": "@yousolution/node-red-contrib-you-sap-service-layer",
+  "version": "0.0.3",
+  "description": "Unofficial module SAP Service Layer for NODE-RED",
+  "license": "MIT",
+  "scripts": {
+    "update": "npm pack && mv yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz ./data && cd data && npm i yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz && docker-compose restart",
+    "test": "mocha 'test/**/*.spec.js'",
+    "coverage": "nyc npm run test"
+  },
+  "keywords": [
+    "node-red",
+    "SAP",
+    "service layer",
+    "API",
+    "ERP",
+    "integration",
+    "youSolution.Cloud"
+  ],
+  "author": "Andrea Trentin <andrea.trentin@yousolution.cloud>",
+  "node-red": {
+    "nodes": {
+      "authenticateSap": "/nodes/authenticateSap.js",
+      "listSap": "/nodes/listSap.js",
+      "createSap": "/nodes/createSap.js",
+      "deleteSap": "/nodes/deleteSap.js",
+      "getSap": "/nodes/getSap.js",
+      "patchSap": "/nodes/patchSap.js",
+      "closeSap": "/nodes/closeSap.js",
+      "crossJoinSap": "/nodes/crossJoinSap.js",
+      "nextLink": "/nodes/nextLink.js"
+    }
+  },
+  "dependencies": {
+    "axios": "^0.23.0",
+    "odata-query": "^6.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/node-red-node-test-helper": "^0.2.2",
+    "@types/sinon": "^10.0.6",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.3",
+    "node-red": "^2.1.4",
+    "node-red-node-test-helper": "^0.2.7",
+    "nyc": "^15.1.0",
+    "sinon": "^12.0.1"
+  }
+}

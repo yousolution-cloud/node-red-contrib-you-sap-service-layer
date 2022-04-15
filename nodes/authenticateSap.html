@@ -1,0 +1,130 @@
+<script type="text/javascript">
+  RED.nodes.registerType('authenticateSap',{
+    category: 'Sap',
+    color: '#FFC300',
+    defaults: {
+      name: {value: ''},
+      host: {value: ''},
+      port: {value: ''},
+      version: {value: ''}
+    },
+    credentials: {
+      company: {type: "string"}, 
+      user: {type:"string"},
+      password: {type:"password"}
+    },
+    inputs:1,
+    outputs:1,
+    icon: 'font-awesome/fa-lock',
+    label: function() {
+      return this.name||"Sap authenticate";
+    }
+  });
+</script>
+  
+<script type="text/html" data-template-name="authenticateSap">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-host"><i class="fa fa-cogs"></i> Host</label>
+    <input type="text" id="node-input-host" placeholder="Host">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-port"><i class="fa fa-cogs"></i> Port</label>
+    <input type="text" id="node-input-port" placeholder="Port">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-version"><i class="fa fa-cogs"></i> Version</label>
+    <select name="node-input-version" id="node-input-version">
+      <option value="v1">v1</option>
+      <option value="v2">v2</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-company"><i class="fa fa-tag"></i> Company</label>
+    <input type="text" id="node-input-company" placeholder="company">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-user"><i class="fa fa-tag"></i> User</label>
+    <input type="text" id="node-input-user" placeholder="user">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
+    <input type="password" id="node-input-password" placeholder="password">
+  </div>
+</script>
+  
+
+<!-- Documentation -->
+<script type="text/html" data-help-name="authenticateSap">
+  <p>Authenticate action</p>
+  
+  <h3>Inputs</h3>
+      <dl class="message-properties">
+          <dt>Name
+            <span class="property-type">string</span>
+          </dt>
+          <dd> the node's name </dd>
+          <dt>Host
+            <span class="property-type">string</span>
+          </dt>
+          <dd> Service layer's hostname </dd>
+          <dt>Port
+            <span class="property-type">number</span>
+          </dt>
+          <dd> Service layer's port </dd>
+          <dt>Version
+            <span class="property-type">[v1,v2]</span>
+          </dt>
+          <dd> Service layer's version </dd>
+          <dt>Company
+            <span class="property-type">string</span>
+          </dt>
+          <dd> Company's name to connect </dd>
+          <dt>User
+            <span class="property-type">string</span>
+          </dt>
+          <dd>Username to connect to the company's database </dd>
+          <dt>Password
+            <span class="property-type">string</span>
+          </dt>
+          <dd>Password to connect to the company's database </dd>
+
+      </dl>
+  
+   <h3>Outputs</h3>
+       <ol class="node-ports">
+           <li>Standard output
+               <dl class="message-properties">
+                   <dt>payload <span class="property-type">string</span></dt>
+                   <dd>the standard output of the command.</dd>
+               </dl>
+           </li>
+       </ol>
+  
+  <h3>Details</h3>
+      <p>this node is used to authenticate to the service layer.
+        See the examples to understand how to use it.
+      </p>
+      <!-- <p><code>msg.payload</code> is used as the payload of the published message.
+      If it contains an Object it will be converted to a JSON string before being sent.
+      If it contains a binary Buffer the message will be published as-is.</p>
+      <p>The topic used can be configured in the node or, if left blank, can be set
+      by <code>msg.topic</code>.</p>
+      <p>Likewise the QoS and retain values can be configured in the node or, if left
+      blank, set by <code>msg.qos</code> and <code>msg.retain</code> respectively.</p> -->
+  
+  <h3>References</h3>
+      <ul>
+          <li><a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a> - for more details </li>
+          <li><a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer">@yousolution-cloud/node-red-contrib-you-sap-service-layer</a> - the nodes github repository</li>
+      </ul>
+</script>

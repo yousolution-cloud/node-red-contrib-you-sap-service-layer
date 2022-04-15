@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  nodered:
+    image: nodered/node-red:2.0.6-12
+    # network_mode: host
+    extra_hosts:
+      - "api.yousolution.local:192.168.1.100"
+    volumes:
+      - ./data:/data
+    ports:
+      - '1880:1880'
+    environment:
+      NODE_ENV: 'dev'
