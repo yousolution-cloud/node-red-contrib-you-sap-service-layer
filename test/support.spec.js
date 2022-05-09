@@ -555,6 +555,286 @@ describe('support library', () => {
       should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
     });
 
+    it('should generate a correct request with Services', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        DocEntry: 1,
+      };
+      let config = {
+        service: 'ApprovalTemplatesService_GetApprovalTemplateList',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isService: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: 'https://host:port/b1s/version/ApprovalTemplatesService_GetApprovalTemplateList',
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
+    it('should generate a error request with Services missing service', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        DocEntry: 1,
+      };
+      let config = {
+        //  service: 'ApprovalTemplatesService_GetApprovalTemplateList',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isService: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: 'https://host:port/b1s/version/ApprovalTemplatesService_GetApprovalTemplateList',
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      expect(() => {
+        Support.generateRequest(node, msg, config, options);
+      }).to.throw('Missing service');
+    });
+
+    it('should generate a correct request with Manipulate Entity', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+      };
+      let config = {
+        entity: 'PickLists',
+        entityId: 'entityId',
+        manipulateMethod: 'GetReleasedAllocation',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: true, isManipulate: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: 'https://host:port/b1s/version/PickLists(3)/GetReleasedAllocation',
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
+    it('should generate an error request with Manipulate Entity missing entity', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+      };
+      let config = {
+        // entity: 'PickLists',
+        entityId: 'entityId',
+        manipulateMethod: 'GetReleasedAllocation',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: true, isManipulate: true };
+
+      expect(() => {
+        Support.generateRequest(node, msg, config, options);
+      }).to.throw('Missing entity');
+    });
+
+    it('should generate an error request with Manipulate Entity missing entity id', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+      };
+      let config = {
+        entity: 'PickLists',
+        // entityId: 'entityId',
+        manipulateMethod: 'GetReleasedAllocation',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: true, isManipulate: true };
+
+      expect(() => {
+        Support.generateRequest(node, msg, config, options);
+      }).to.throw('Missing entityId');
+    });
+
+    it('should generate an error request with Manipulate Entity missing method', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+      };
+      let config = {
+        entity: 'PickLists',
+        entityId: 'entityId',
+        // manipulateMethod: 'GetReleasedAllocation',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: true, isManipulate: true };
+
+      expect(() => {
+        Support.generateRequest(node, msg, config, options);
+      }).to.throw('Missing method');
+    });
+
     it('should have error missing object', () => {
       const node = {
         context: () => {

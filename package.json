@@ -28,7 +28,9 @@
       "patchSap": "/nodes/patchSap.js",
       "closeSap": "/nodes/closeSap.js",
       "crossJoinSap": "/nodes/crossJoinSap.js",
-      "nextLink": "/nodes/nextLink.js"
+      "nextLink": "/nodes/nextLink.js",
+      "serviceSap": "/nodes/serviceSap.js",
+      "manipulateEntitySap": "/nodes/manipulateEntitySap.js"
     }
   },
   "dependencies": {

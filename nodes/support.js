@@ -148,6 +148,8 @@ function generateRequest(node, msg, config, options) {
     hasEntityId: false,
     isClose: false,
     isCrossJoin: false,
+    service: null,
+    manipulateMethod: null,
     method: 'GET',
     data: null,
   };
@@ -160,10 +162,15 @@ function generateRequest(node, msg, config, options) {
   options.hasEntityId = options.hasEntityId || false;
   options.isClose = options.isClose || false;
   options.isCrossJoin = options.isCrossJoin || false;
+  options.isManipulate = options.isManipulate || false;
+  options.isService = options.isService || false;
+  options.service = options.service || null;
+  options.manipulateMethod = options.manipulateMethod || null;
 
   const { idAuthNode, host, port, version, cookies } = getSapParams(node, msg, config);
 
   let rawQuery = null;
+  let url;
   if (options.hasRawQuery) {
     try {
       rawQuery = eval(config.query);
@@ -173,8 +180,14 @@ function generateRequest(node, msg, config, options) {
   }
 
   let entity = config.entity;
-  if (!entity) {
+  if (!entity && !options.isService) {
     throw new Error('Missing entity');
+  }
+
+  if (options.isService) {
+    if (!config.service) {
+      throw new Error('Missing service');
+    }
   }
 
   if (entity == 'UDO') {
@@ -190,8 +203,6 @@ function generateRequest(node, msg, config, options) {
     const scriptName = config.scriptName;
     url = `https://${host}:${port}/b1s/${version}/${entity}/${partnerName}/${scriptName}`;
   }
-
-  let url;
 
   const odataNextLink = msg[config.nextLink];
 
@@ -240,6 +251,21 @@ function generateRequest(node, msg, config, options) {
     if (options.isClose) {
       url += `/Close`;
     }
+
+    if (options.isManipulate) {
+      if (!config.manipulateMethod) {
+        throw new Error('Missing method');
+      }
+      if (thickIdApi.includes(entity)) {
+        url = `https://${host}:${port}/b1s/${version}/${entity}('${entityId}')/${config.manipulateMethod}`;
+      } else {
+        url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})/${config.manipulateMethod}`;
+      }
+    }
+  }
+
+  if (config.service) {
+    url = `https://${host}:${port}/b1s/${version}/${config.service}`;
   }
 
   if (rawQuery && !odataNextLink) {
