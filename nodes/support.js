@@ -164,6 +164,7 @@ function generateRequest(node, msg, config, options) {
   options.isCrossJoin = options.isCrossJoin || false;
   options.isManipulate = options.isManipulate || false;
   options.isService = options.isService || false;
+  options.isSQLQuery = options.isSQLQuery || false;
   options.service = options.service || null;
   options.manipulateMethod = options.manipulateMethod || null;
 
@@ -171,6 +172,7 @@ function generateRequest(node, msg, config, options) {
 
   let rawQuery = null;
   let url;
+
   if (options.hasRawQuery) {
     try {
       rawQuery = eval(config.query);
@@ -180,7 +182,7 @@ function generateRequest(node, msg, config, options) {
   }
 
   let entity = config.entity;
-  if (!entity && !options.isService) {
+  if (!entity && !options.isService && !options.isSQLQuery) {
     throw new Error('Missing entity');
   }
 
@@ -266,6 +268,19 @@ function generateRequest(node, msg, config, options) {
 
   if (config.service) {
     url = `https://${host}:${port}/b1s/${version}/${config.service}`;
+  }
+
+  if (options.isSQLQuery) {
+    if (!config.sqlCode) {
+      throw new Error('Missing sqlCode');
+    }
+    if (!config.sqlName) {
+      throw new Error('Missing sqlName');
+    }
+    if (!config.sqlText) {
+      throw new Error('Missing sqlText');
+    }
+    url = `https://${host}:${port}/b1s/${version}/SQLQueries`;
   }
 
   if (rawQuery && !odataNextLink) {

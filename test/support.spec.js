@@ -835,6 +835,58 @@ describe('support library', () => {
       }).to.throw('Missing method');
     });
 
+    it('should generate a correct request with SQLQuery create query', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+      };
+      let config = {
+        sqlCode: 'sqlCode',
+        sqlName: 'sqlName',
+        sqlText: 'sqlText',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isSQLQuery: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: 'https://host:port/b1s/version/SQLQueries',
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
     it('should have error missing object', () => {
       const node = {
         context: () => {
