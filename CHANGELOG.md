@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.0.5] - 2022-05-27
+
+- Change cross join
+- Fix html icons
+
 # [0.0.4] - 2022-05-12
 
 - Add all services of SAP service layer
