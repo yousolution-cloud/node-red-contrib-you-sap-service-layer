@@ -144,6 +144,52 @@ describe('authenticateSap Node', () => {
     });
   });
 
+  it('should generic error ', (done) => {
+    const flow = [
+      {
+        id: 'n1',
+        type: 'authenticateSap',
+        name: 'authenticateSap',
+        wires: [['n2']],
+        z: 'flow',
+        rules: [{ t: 'set', p: 'payload', to: '#:(memory1)::flowValue', tot: 'flow' }],
+      },
+      { id: 'n2', type: 'helper' },
+    ];
+    helper.load(authenticateSap, flow, () => {
+      const n2 = helper.getNode('n2');
+      const n1 = helper.getNode('n1');
+      n1.credentials.user = 'user';
+      n1.credentials.password = 'password';
+      n1.credentials.company = 'company';
+
+      sinon.stub(Support, 'login').rejects(new Error('Custom error'));
+
+      // n1.context().flow.set(`_YOU_SapServiceLayer_${n1.id}.headers`, true, 'memory1', function (error) {
+      //   // console.log(error);
+      // });
+
+      n1.receive({});
+
+      n2.on('input', (msg) => {
+        try {
+          msg.should.have.property('payload', new Error('Custom error'));
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+
+      n1.on('call:error', (error) => {
+        try {
+          error.should.have.property('firstArg', new Error('Custom error'));
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+  });
+
   it('should have without headers connected', (done) => {
     const flow = [
       {

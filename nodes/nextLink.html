@@ -7,7 +7,7 @@
       nextLink: {value: ''}
     },
     inputs:1,
-    outputs:1,
+    outputs:2,
     icon: 'font-awesome/fa-arrows-h',
     label: function() {
       return this.name||"Next link";
@@ -59,8 +59,14 @@
     <ol class="node-ports">
       <li>Standard output
         <dl class="message-properties">
-          <dt>payload <span class="property-type">string</span></dt>
-          <dd>the standard output of the command.</dd>
+          <dt>payload <span class="property-type">msg</span></dt>
+          <dd>It returns the message with next link to the next page.</dd>
+        </dl>
+      </li>
+      <li>Standard output
+        <dl class="message-properties">
+          <dt>payload <span class="property-type">msg</span></dt>
+          <dd>It returns the message when the last page is reached.</dd>
         </dl>
       </li>
     </ol>
