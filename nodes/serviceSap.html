@@ -21,7 +21,7 @@
       // docEntry: {value: ''},
       // code: {value: ''},
       headers: {value: ''},
-      bodyPatch: {value: ''}
+      bodyPost: {value: ''}
     },
     inputs:1,
     outputs:1,
@@ -58,11 +58,11 @@
         value: 'headers'
       });
 
-      $("#node-input-bodyPatch").typedInput({
+      $("#node-input-bodyPost").typedInput({
         type:"msg",
         types:["msg"],
-        typeField: "#node-input-bodyPatch-type",
-        value: 'bodyPatch'
+        typeField: "#node-input-bodyPost-type",
+        value: 'bodyPost'
       });
 
       // jQuery("#node-input-entity").change(function() {
@@ -147,15 +147,15 @@
   </div>
   
   <div class="form-row">
-    <label for="node-input-type"><i class="fa fa-cog"></i> BodyPatch</label>
-    <input type="text" id="node-input-bodyPatch">
-    <input type="hidden" id="node-input-bodyPatch-type">
+    <label for="node-input-type"><i class="fa fa-cog"></i> BodyPost</label>
+    <input type="text" id="node-input-bodyPost">
+    <input type="hidden" id="node-input-bodyPost-type">
   </div>
 </script>
   
 <!-- Documentation -->
 <script type="text/html" data-help-name="serviceSap">
-  <p>Patch action</p>
+  <p>Post action</p>
   
   <h3>Inputs</h3>
       <dl class="message-properties">
@@ -171,7 +171,7 @@
             <span class="property-type">number | string</span>
           </dt>
           <dd> the id of the entity of SAP </dd>
-          <dt>bodyPatch
+          <dt>bodyPost
             <span class="property-type">object</span>
           </dt>
           <dd> data to update to the entity </dd>
