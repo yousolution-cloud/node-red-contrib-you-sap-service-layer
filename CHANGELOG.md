@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.1.0] - 2022-07-28
+
+- Added sqlQuery node to execute saved sql from SAP Service Layer
+- Added a second output to the nextLink node to check when pagination is finished
+- Bug fix
+
 # [0.0.5] - 2022-05-27
 
 - Change cross join

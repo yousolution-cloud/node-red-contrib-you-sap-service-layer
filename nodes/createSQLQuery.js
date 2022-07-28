@@ -50,7 +50,7 @@ module.exports = function (RED) {
         //   done(new Error('bodyPost must have value'));
         //   return;
         // }
-        const options = { method: 'POST', hasRawQuery: false, isSQLQuery: true, data: data };
+        const options = { method: 'POST', hasRawQuery: false, isCreateSQLQuery: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
         msg.payload = result;

@@ -1,20 +1,21 @@
 <script type="text/javascript">
-  RED.nodes.registerType('createSQLQuery',{
+  RED.nodes.registerType('SQLQuery',{
     category: 'Sap',
     color: '#FFC300',
     defaults: {
       name: {value: ''},
       sqlCode: {value: ''},
-      sqlName: {value: ''},
-      sqlText: {value: ''},
+      // sqlName: {value: ''},
+      // sqlText: {value: ''},
       headers: {value: ''},
+      nextLink: {value: ''},
       bodyPost: {value: ''}
     },
     inputs:1,
     outputs:1,
-    icon: 'font-awesome/fa-plus',
+    icon: 'font-awesome/fa-search',
     label: function() {
-      return this.name||"Create SQL Query";
+      return this.name||"SQL Query";
     },
     oneditprepare: function() {
 
@@ -25,25 +26,32 @@
         value: 'sqlCode'
       });
 
-      $("#node-input-sqlName").typedInput({
-        type:"msg",
-        types:["msg"],
-        typeField: "#node-input-sqlName-type",
-        value: 'sqlName'
-      });
+      // $("#node-input-sqlName").typedInput({
+      //   type:"msg",
+      //   types:["msg"],
+      //   typeField: "#node-input-sqlName-type",
+      //   value: 'sqlName'
+      // });
 
-      $("#node-input-sqlText").typedInput({
-        type:"msg",
-        types:["msg"],
-        typeField: "#node-input-sqlText-type",
-        value: 'sqlText'
-      });
+      // $("#node-input-sqlText").typedInput({
+      //   type:"msg",
+      //   types:["msg"],
+      //   typeField: "#node-input-sqlText-type",
+      //   value: 'sqlText'
+      // });
 
       $("#node-input-headers").typedInput({
         type:"msg",
         types:["msg"],
         typeField: "#node-input-headers-type",
         value: 'headers'
+      });
+
+      $("#node-input-nextLink").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-nextLink-type",
+        value: 'nextLink'
       });
 
       $("#node-input-bodyPost").typedInput({
@@ -74,7 +82,7 @@
   });
 </script>
 
-<script type="text/html" data-template-name="createSQLQuery">
+<script type="text/html" data-template-name="SQLQuery">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
@@ -86,7 +94,7 @@
     <input type="hidden" id="node-input-sqlCode-type">
   </div>
 
-  <div class="form-row">
+  <!-- <div class="form-row">
     <label for="node-input-type"><i class="fa fa-cog"></i> SqlName</label>
     <input type="text" id="node-input-sqlName">
     <input type="hidden" id="node-input-sqlName-type">
@@ -96,12 +104,18 @@
     <label for="node-input-type"><i class="fa fa-cog"></i> SqlText</label>
     <input type="text" id="node-input-sqlText">
     <input type="hidden" id="node-input-sqlText-type">
-  </div>
+  </div> -->
 
   <div class="form-row">
     <label for="node-input-type"><i class="fa fa-cog"></i> Headers</label>
     <input type="text" id="node-input-headers">
     <input type="hidden" id="node-input-headers-type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-cog"></i> NextLink</label>
+    <input type="text" id="node-input-nextLink">
+    <input type="hidden" id="node-input-nextLink-type">
   </div>
 
   <div class="form-row">
@@ -113,8 +127,8 @@
 
 
 <!-- Documentation -->
-<script type="text/html" data-help-name="createSQLQuery">
-  <p>Create a new SQL query from SAP service layer</p>
+<script type="text/html" data-help-name="SQLQuery">
+  <p>Create a new Entity action</p>
   
   <h3>Inputs</h3>
       <dl class="message-properties">

@@ -870,7 +870,7 @@ describe('support library', () => {
         sqlName: 'sqlName',
         sqlText: 'sqlText',
       };
-      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isSQLQuery: true };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isCreateSQLQuery: true };
       const expectedValue = {
         axiosOptions: {
           headers: {
@@ -879,6 +879,159 @@ describe('support library', () => {
           method: 'POST',
           rejectUnauthorized: false,
           url: 'https://host:port/b1s/version/SQLQueries',
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
+    it('should generate a correct request with SQLQuery execute query without params', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+        sqlCode: 'queryCode',
+      };
+      let config = {
+        sqlCode: 'sqlCode',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isSQLQuery: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: `https://host:port/b1s/version/SQLQueries('queryCode')/List`,
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
+    it('should generate a correct request with SQLQuery execute query with params', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+        sqlCode: 'queryCode',
+      };
+      let config = {
+        sqlCode: 'sqlCode',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isSQLQuery: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: `https://host:port/b1s/version/SQLQueries('queryCode')/List`,
+          withCredentials: true,
+        },
+        idAuthNode: 1,
+      };
+
+      should.deepEqual(Support.generateRequest(node, msg, config, options), expectedValue);
+    });
+
+    it('should generate a correct request with SQLQuery execute query with nextLink', () => {
+      const node = {
+        context: () => {
+          return {
+            flow: {
+              get: (param) => {
+                if (param == '_YOU_SapServiceLayer_1.host') {
+                  return 'host';
+                }
+                if (param == '_YOU_SapServiceLayer_1.port') {
+                  return 'port';
+                }
+                if (param == '_YOU_SapServiceLayer_1.version') {
+                  return 'version';
+                }
+                if (param == '_YOU_SapServiceLayer_1.headers') {
+                  return ['header:1', 'header:2'];
+                }
+              },
+            },
+          };
+        },
+      };
+
+      const msg = {
+        _YOU_SapServiceLayer: {
+          idAuth: 1,
+        },
+        entityId: 3,
+        sqlCode: 'queryCode',
+      };
+      let config = {
+        sqlCode: 'sqlCode',
+      };
+      const options = { method: 'POST', hasRawQuery: false, hasEntityId: false, isSQLQuery: true };
+      const expectedValue = {
+        axiosOptions: {
+          headers: {
+            Cookie: 'header:1;header:2',
+          },
+          method: 'POST',
+          rejectUnauthorized: false,
+          url: `https://host:port/b1s/version/SQLQueries('queryCode')/List`,
           withCredentials: true,
         },
         idAuthNode: 1,

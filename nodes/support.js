@@ -164,7 +164,7 @@ function generateRequest(node, msg, config, options) {
   options.isCrossJoin = options.isCrossJoin || false;
   options.isManipulate = options.isManipulate || false;
   options.isService = options.isService || false;
-  options.isSQLQuery = options.isSQLQuery || false;
+  options.isCreateSQLQuery = options.isCreateSQLQuery || false;
   options.service = options.service || null;
   options.manipulateMethod = options.manipulateMethod || null;
 
@@ -182,7 +182,7 @@ function generateRequest(node, msg, config, options) {
   }
 
   let entity = config.entity;
-  if (!entity && !options.isService && !options.isSQLQuery) {
+  if (!entity && !options.isService && !options.isCreateSQLQuery && !options.isSQLQuery) {
     throw new Error('Missing entity');
   }
 
@@ -214,6 +214,13 @@ function generateRequest(node, msg, config, options) {
 
   if (options.isCrossJoin) {
     url = `https://${host}:${port}/b1s/${version}/$crossjoin(${entity})`;
+  }
+
+  if (options.isSQLQuery) {
+    if (!config.sqlCode) {
+      throw new Error('Missing sqlCode');
+    }
+    url = `https://${host}:${port}/b1s/${version}/SQLQueries('${msg[config.sqlCode]}')/List`;
   }
 
   if (odataNextLink) {
@@ -270,7 +277,7 @@ function generateRequest(node, msg, config, options) {
     url = `https://${host}:${port}/b1s/${version}/${config.service}`;
   }
 
-  if (options.isSQLQuery) {
+  if (options.isCreateSQLQuery) {
     if (!config.sqlCode) {
       throw new Error('Missing sqlCode');
     }
