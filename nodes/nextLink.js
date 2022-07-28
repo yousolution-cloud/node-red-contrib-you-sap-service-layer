@@ -7,12 +7,12 @@ module.exports = function (RED) {
       const nextLink = msg[config.nextLink];
 
       if (!nextLink) {
+        node.send([null, msg]);
         return;
       }
-      
-      node.send(msg);
+
+      node.send([msg, null]);
     });
   }
   RED.nodes.registerType('nextLink', NextLinkNode, {});
 };
-
