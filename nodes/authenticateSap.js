@@ -27,6 +27,18 @@ module.exports = function (RED) {
     }
 
     node.on('input', async (msg, send, done) => {
+      // If Company setted from msg
+      if (node.credentials.companyType == 'msg') {
+        const company = msg[node.credentials.company];
+        flowContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.CompanyDB`, company);
+      }
+
+      // If User setted from msg
+      if (node.credentials.userType == 'msg') {
+        const user = msg[node.credentials.user];
+        flowContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`, user);
+      }
+
       // reset status
       node.status({});
 
@@ -65,7 +77,9 @@ module.exports = function (RED) {
   RED.nodes.registerType('authenticateSap', AuthenticateSapNode, {
     credentials: {
       company: { type: 'text' },
+      companyType: { type: 'text' },
       user: { type: 'text' },
+      userType: { type: 'text' },
       password: { type: 'password' },
     },
   });
