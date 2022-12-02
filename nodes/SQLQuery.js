@@ -29,7 +29,7 @@ module.exports = function (RED) {
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
         msg.payload = result.data;
-        msg.nextLink = result.data['odata.nextLink'];
+        msg.nextLink = result.data['odata.nextLink'] || result.data['@odata.nextLink'];
         msg.statusCode = result.status;
         node.status({ fill: 'green', shape: 'dot', text: 'success' });
         node.send(msg);
