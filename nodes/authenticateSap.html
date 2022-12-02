@@ -9,8 +9,10 @@
       version: {value: ''}
     },
     credentials: {
-      company: {type: "string"}, 
+      company: {type: "string"},
+      companyType: {type: 'string'},
       user: {type:"string"},
+      userType: {type: 'string'},
       password: {type:"password"}
     },
     inputs:1,
@@ -18,6 +20,19 @@
     icon: 'font-awesome/fa-lock',
     label: function() {
       return this.name||"Sap authenticate";
+    },
+    oneditprepare: function() { 
+      $("#node-input-company").typedInput({
+        default:"msg",
+        types:["msg", "str"],
+        typeField: "#node-input-companyType"
+      });
+
+      $("#node-input-user").typedInput({
+        default:"msg",
+        types:["msg", "str"],
+        typeField: "#node-input-userType"
+      });
     }
   });
 </script>
@@ -49,11 +64,13 @@
   <div class="form-row">
     <label for="node-input-company"><i class="fa fa-tag"></i> Company</label>
     <input type="text" id="node-input-company" placeholder="company">
+    <input type="hidden" id="node-input-companyType">
   </div>
 
   <div class="form-row">
     <label for="node-input-user"><i class="fa fa-tag"></i> User</label>
     <input type="text" id="node-input-user" placeholder="user">
+    <input type="hidden" id="node-input-userType">
   </div>
 
   <div class="form-row">
