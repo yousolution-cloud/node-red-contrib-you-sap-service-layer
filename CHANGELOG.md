@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.1.1] - 2022-12-09
+
+- Added label output to nextLink block
+- Bug fix
+
 # [0.1.0] - 2022-07-28
 
 - Added sqlQuery node to execute saved sql from SAP Service Layer

@@ -1,6 +1,6 @@
 {
   "name": "@yousolution/node-red-contrib-you-sap-service-layer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unofficial module SAP Service Layer for NODE-RED",
   "license": "MIT",
   "scripts": {
@@ -19,6 +19,7 @@
   ],
   "author": "Andrea Trentin <andrea.trentin@yousolution.cloud>",
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
       "authenticateSap": "/nodes/authenticateSap.js",
       "listSap": "/nodes/listSap.js",
