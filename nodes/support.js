@@ -62,15 +62,15 @@ const thickIdApi = [
 ];
 
 async function login(node, idAuth) {
-  const flowContext = node.context().flow;
+  const globalContext = node.context().global;
 
-  const host = flowContext.get(`_YOU_SapServiceLayer_${idAuth}.host`);
-  const port = flowContext.get(`_YOU_SapServiceLayer_${idAuth}.port`);
-  const version = flowContext.get(`_YOU_SapServiceLayer_${idAuth}.version`);
+  const host = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.host`);
+  const port = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.port`);
+  const version = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.version`);
 
   const url = `https://${host}:${port}/b1s/${version}/Login`;
 
-  const credentials = flowContext.get(`_YOU_SapServiceLayer_${idAuth}.credentials`);
+  const credentials = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.credentials`);
   const dataString = JSON.stringify(credentials);
 
   const options = {
@@ -107,14 +107,14 @@ async function sendRequest({ node, msg, config, axios, login, options }) {
   } catch (error) {
     // Refresh headers re-login
     if (error.response && (error.response.status == 401 || error.response.status == 301)) {
-      const flowContext = node.context().flow;
+      const globalCotext = node.context().global;
       // try {
       // update cookies for session timeout
       const result = await login(node, requestOptions.idAuthNode);
-      flowContext.set(`_YOU_SapServiceLayer_${requestOptions.idAuthNode}.headers`, result.headers['set-cookie']);
+      globalCotext.set(`_YOU_SapServiceLayer_${requestOptions.idAuthNode}.headers`, result.headers['set-cookie']);
 
       try {
-        const headers = flowContext.get(`_YOU_SapServiceLayer_${requestOptions.idAuthNode}.headers`).join(';');
+        const headers = globalCotext.get(`_YOU_SapServiceLayer_${requestOptions.idAuthNode}.headers`).join(';');
 
         requestOptions.axiosOptions.headers.Cookie = headers;
 
@@ -319,17 +319,17 @@ function generateRequest(node, msg, config, options) {
 
 function getSapParams(node, msg) {
   try {
-    const flowContext = node.context().flow;
+    const globalContext = node.context().global;
 
     const idAuthNode = msg._YOU_SapServiceLayer.idAuth;
-    const host = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.host`);
-    const port = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.port`);
-    const version = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.version`);
+    const host = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.host`);
+    const port = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.port`);
+    const version = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.version`);
 
     // if (!flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`)) {
     //   throw new Error('Authentication failed');
     // }
-    const cookies = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
+    const cookies = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
 
     return { idAuthNode: idAuthNode, host: host, port: port, version: version, cookies: cookies };
   } catch (error) {

@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 # [0.1.1] - 2022-12-09
 
 - Added label output to nextLink block
+- Fix authentication for subflows compatibility
 - Bug fix
 
 # [0.1.0] - 2022-07-28

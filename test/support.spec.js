@@ -19,7 +19,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -96,7 +96,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -163,7 +163,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -211,7 +211,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -262,7 +262,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -312,7 +312,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -364,7 +364,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -405,7 +405,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -457,7 +457,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -498,7 +498,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -559,7 +559,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -609,7 +609,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -661,7 +661,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -713,7 +713,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -755,7 +755,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -797,7 +797,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -839,7 +839,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -891,7 +891,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -942,7 +942,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -993,7 +993,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1044,7 +1044,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1081,7 +1081,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {},
             },
           };
@@ -1103,7 +1103,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1147,7 +1147,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1189,7 +1189,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1247,7 +1247,7 @@ describe('support library', () => {
       const node = {
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1296,7 +1296,7 @@ describe('support library', () => {
         send: () => {},
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';
@@ -1354,7 +1354,7 @@ describe('support library', () => {
         send: () => {},
         context: () => {
           return {
-            flow: {
+            global: {
               get: (param) => {
                 if (param == '_YOU_SapServiceLayer_1.host') {
                   return 'host';

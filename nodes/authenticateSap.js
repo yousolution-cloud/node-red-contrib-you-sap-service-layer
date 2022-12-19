@@ -9,9 +9,9 @@ module.exports = function (RED) {
     // reset status
     node.status({});
 
-    const flowContext = node.context().flow;
+    const globalContext = node.context().global;
 
-    flowContext.set(`_YOU_SapServiceLayer_${node.id}`, {
+    globalContext.set(`_YOU_SapServiceLayer_${node.id}`, {
       host: config.host,
       port: config.port,
       version: config.version,
@@ -30,13 +30,13 @@ module.exports = function (RED) {
       // If Company setted from msg
       if (node.credentials.companyType == 'msg') {
         const company = msg[node.credentials.company];
-        flowContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.CompanyDB`, company);
+        globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.CompanyDB`, company);
       }
 
       // If User setted from msg
       if (node.credentials.userType == 'msg') {
         const user = msg[node.credentials.user];
-        flowContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`, user);
+        globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`, user);
       }
 
       // reset status
@@ -48,7 +48,7 @@ module.exports = function (RED) {
         return;
       }
 
-      const headers = flowContext.get(`_YOU_SapServiceLayer_${node.id}.headers`);
+      const headers = globalContext.get(`_YOU_SapServiceLayer_${node.id}.headers`);
 
       msg._YOU_SapServiceLayer = {
         idAuth: node.id,
@@ -57,7 +57,7 @@ module.exports = function (RED) {
       if (!headers) {
         try {
           const result = await Support.login(node, node.id);
-          flowContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, result.headers['set-cookie']);
+          globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, result.headers['set-cookie']);
         } catch (error) {
           msg.payload = error;
           if (error.response && error.response.data) {
