@@ -67,4 +67,4 @@ credentials.yml
 .nyc_output
 
 
-.tgz
+*.tgz
