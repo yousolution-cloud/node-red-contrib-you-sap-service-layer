@@ -59,7 +59,7 @@ module.exports = function (RED) {
       // reset status
       node.status({});
 
-      if (!node.credentials.user || !node.credentials.password || !node.credentials.company) {
+      if (!node.credentials.user || !node.credentials.company) {
         node.status({ fill: 'red', shape: 'dot', text: 'Missing credentials' });
         done(new Error('Missing credentials'));
         return;
