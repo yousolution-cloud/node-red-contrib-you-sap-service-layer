@@ -1,6 +1,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const axios = require('axios');
 const Support = require('./support');
+const { VerifyErrorSL } = require('./manageErrors');
 
 module.exports = function (RED) {
   function PatchSapNode(config) {
@@ -23,10 +24,12 @@ module.exports = function (RED) {
         const options = { method: 'PATCH', hasRawQuery: false, hasEntityId: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = result.data;
+        msg.payload = VerifyErrorSL(node, msg, result.data, true);//result.data;
         msg.statusCode = result.status;
-        node.status({ fill: 'green', shape: 'dot', text: 'success' });
-        node.send(msg);
+        if(msg.payload) {
+          node.status({ fill: 'green', shape: 'dot', text: 'success' });
+          node.send(msg);
+        }
       } catch (error) {
         node.status({ fill: 'red', shape: 'dot', text: 'Error' });
         done(error);

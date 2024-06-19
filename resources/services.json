@@ -200,7 +200,7 @@
   "NFModelsService": ["NFModelsService_GetList"],
   "NFTaxCategoriesService": ["NFTaxCategoriesService_GetList"],
   "OccurrenceCodesService": ["OccurrenceCodesService_GetList"],
-  "OrdersService": ["OrdersService_GetApprovalTemplates", "OrdersService_HandleApprovalRequest"],
+  "OrdersService": ["OrdersService_GetApprovalTemplates", "OrdersService_Preview" ,"OrdersService_HandleApprovalRequest"],
   "PartnersSetupsService": ["PartnersSetupsService_GetList"],
   "PaymentBlocksService": ["PaymentBlocksService_GetPaymentBlockList"],
   "PaymentCalculationService": ["PaymentCalculationService_GetPaymentAmount"],

@@ -22,15 +22,32 @@ module.exports = function (RED) {
       },
     });
 
-    if (!node.credentials.user || !node.credentials.password || !node.credentials.company) {
+    if (!node.credentials.user || !node.credentials.company) {
       node.status({ fill: 'gray', shape: 'ring', text: 'Missing credentials' });
     }
 
     node.on('input', async (msg, send, done) => {
+
+      if(!node.credentials.password && !msg.password){
+        node.status({ fill: 'gray', shape: 'ring', text: 'Missing credentials Password Code' });
+      }
+
+      if(msg.password){
+        globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.Password`, msg.password);
+        //node.status({ fill: 'gray', shape: 'ring', text: 'Missing credentials Password Code' });
+      }
+      
       // If Company setted from msg
       if (node.credentials.companyType == 'msg') {
         const company = msg[node.credentials.company];
+        let currentCompany = globalContext.get(`_YOU_SapServiceLayer_${node.id}.credentials.CompanyDB`);
+
+        if(company !== currentCompany) {
+          globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, null);
+        }
+
         globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.CompanyDB`, company);
+
       }
 
       // If User setted from msg
@@ -48,30 +65,56 @@ module.exports = function (RED) {
         return;
       }
 
+      let currentDate = new Date();
       const headers = globalContext.get(`_YOU_SapServiceLayer_${node.id}.headers`);
+      const exipiredTime = globalContext.get(`_YOU_SapServiceLayer_${node.id}.exp`);
+      let validToken = true;
 
       msg._YOU_SapServiceLayer = {
         idAuth: node.id,
       };
 
-      if (!headers) {
+      if(headers && exipiredTime) {
+        let providedDate = new Date(exipiredTime);
+        let timeDifference = currentDate - providedDate;
+        let minutesDifference = timeDifference / (1000 * 60);
+        validToken = minutesDifference > 25 ? false : true;
+      }
+
+
+      if (!headers  || !validToken) {
         try {
           const result = await Support.login(node, node.id);
-          globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, result.headers['set-cookie']);
+          if(result.data.hasOwnProperty("error")) {
+            node.error( result.data.error , msg);
+            node.status({ fill: 'red', shape: 'dot', text: 'disconnected' });
+          }
+          else {
+            globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, result.headers['set-cookie']);
+            globalContext.set(`_YOU_SapServiceLayer_${node.id}.exp`, currentDate.toISOString());
+            node.send(msg);
+            node.status({ fill: 'green', shape: 'dot', text: 'connected' });
+          }
+          // globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, result.headers['set-cookie']);
+          // globalContext.set(`_YOU_SapServiceLayer_${node.id}.exp`, currentDate.toISOString());
         } catch (error) {
           msg.payload = error;
           if (error.response && error.response.data) {
             msg.statusCode = error.response.status;
             msg.payload = error.response.data;
           }
-          node.send(msg);
+          node.error( error , msg);
+          //node.send(msg);
           node.status({ fill: 'red', shape: 'dot', text: 'disconnected' });
           done(error);
-          return;
+          //return;
         }
       }
-      node.send(msg);
-      node.status({ fill: 'green', shape: 'dot', text: 'connected' });
+      else {
+        node.send(msg);
+        node.status({ fill: 'green', shape: 'dot', text: 'connected' });
+      }
+
     });
   }
   RED.nodes.registerType('authenticateSap', AuthenticateSapNode, {
