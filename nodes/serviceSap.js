@@ -1,6 +1,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const axios = require('axios');
 const Support = require('./support');
+const { VerifyErrorSL } = require('./manageErrors');
 const services = require('../resources/services.json');
 
 module.exports = function (RED) {
@@ -23,10 +24,12 @@ module.exports = function (RED) {
         const options = { method: 'POST', hasRawQuery: false, isService: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = result;
+        msg.payload = VerifyErrorSL(node, msg, result.data);//result.data;
         msg.statusCode = result.status;
-        node.status({ fill: 'green', shape: 'dot', text: 'success' });
-        node.send(msg);
+        if(msg.payload) {
+          node.status({ fill: 'green', shape: 'dot', text: 'success' });
+          node.send(msg);
+        }
       } catch (error) {
         node.status({ fill: 'red', shape: 'dot', text: 'Error' });
         done(error);

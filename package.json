@@ -1,10 +1,10 @@
 {
   "name": "@yousolution/node-red-contrib-you-sap-service-layer",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Unofficial module SAP Service Layer for NODE-RED",
   "license": "MIT",
   "scripts": {
-    "update": "npm pack && mv yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz ./data && cd data && npm i yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz && docker-compose restart",
+    "update": "npm pack && copy yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz .\\data\\ && cd .\\data\\ && npm i yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz && docker-compose restart",
     "test": "mocha 'test/**/*.spec.js'",
     "coverage": "nyc npm run test"
   },
@@ -37,8 +37,8 @@
     }
   },
   "dependencies": {
-    "axios": "^0.23.0",
-    "odata-query": "^6.7.1"
+    "axios": "^1.2.2",
+    "odata-query": "^7.0.4"
   },
   "repository": {
     "type": "git",

@@ -7,6 +7,7 @@ const thickIdApi = [
   'AssetClasses',
   'AssetDepreciationGroups',
   'AssetGroups',
+  'AlternateCatNum',
   'BankChargesAllocationCodes',
   'BusinessPartners',
   'CampaignResponseType',
@@ -83,12 +84,7 @@ async function login(node, idAuth) {
       'Content-Length': dataString.length,
     },
   };
-
-  // try {
   return await axiosLibrary(options);
-  // } catch (error) {
-  //   throw Error(`ERROR FUNCTION LOGIN: ${error}`);
-  // }
 }
 
 async function sendRequest({ node, msg, config, axios, login, options }) {
@@ -124,10 +120,13 @@ async function sendRequest({ node, msg, config, axios, login, options }) {
           msg.statusCode = error.response.status;
           msg.payload = error.response.data;
           msg.requestUrl = requestOptions.axiosOptions.url;
-          node.send(msg);
-          throw new Error(JSON.stringify(error.response.data));
+          //node.send(msg);
+          node.error(JSON.stringify(error.response.data), msg);
+          //throw new Error(JSON.stringify(error.response.data));
         }
-        throw error;
+        else {
+          throw error;
+        }
       }
       // }
     }
@@ -135,10 +134,14 @@ async function sendRequest({ node, msg, config, axios, login, options }) {
       msg.statusCode = error.response.status;
       msg.payload = error.response.data;
       msg.requestUrl = requestOptions.axiosOptions.url;
-      node.send(msg);
-      throw new Error(JSON.stringify(error.response.data));
+      //node.send(msg);
+      node.error(JSON.stringify(error.response.data), msg)
+     // throw new Error(JSON.stringify(error.response.data));
     }
-    throw error;
+    else {
+      throw error;
+    }
+
   }
 }
 
@@ -252,7 +255,13 @@ function generateRequest(node, msg, config, options) {
     }
 
     if (thickIdApi.includes(entity) || config.entity === 'UDT') {
-      url = `https://${host}:${port}/b1s/${version}/${entity}('${entityId}')`;
+      if(Number.isInteger(entityId)){
+        url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
+      }
+      else {
+        url = `https://${host}:${port}/b1s/${version}/${entity}('${entityId}')`;
+      }
+      
     } else {
       url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
     }

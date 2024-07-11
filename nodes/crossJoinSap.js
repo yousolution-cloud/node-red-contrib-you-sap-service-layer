@@ -1,6 +1,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const axios = require('axios');
 const Support = require('./support');
+const { VerifyErrorSL } = require('./manageErrors');
 // const buildQuery = require('odata-query').default;
 
 module.exports = function (RED) {
@@ -19,11 +20,13 @@ module.exports = function (RED) {
         const options = { method: 'GET', hasRawQuery: true, hasEntityId: false, isCrossJoin: true };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = result.data;
+        msg.payload = VerifyErrorSL(node, msg, result.data);// result.data;
         msg.statusCode = result.status;
         msg.nextLink = result.data['odata.nextLink'] || result.data['@odata.nextLink'];
-        node.status({ fill: 'green', shape: 'dot', text: 'success' });
-        node.send(msg);
+        if(msg.payload) {
+          node.status({ fill: 'green', shape: 'dot', text: 'success' });
+          node.send(msg);
+        }
       } catch (error) {
         node.status({ fill: 'red', shape: 'dot', text: 'Error' });
         done(error);
