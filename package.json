@@ -1,10 +1,13 @@
 {
   "name": "@yousolution/node-red-contrib-you-sap-service-layer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Unofficial module SAP Service Layer for NODE-RED",
   "license": "MIT",
   "scripts": {
-    "update": "npm pack && copy yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz .\\data\\ && cd .\\data\\ && npm i yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz && docker-compose restart",
+    "update": "run-script-os",
+    "update:linux:darwin": "npm pack && mv yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz ./data && cd data && npm i yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz && docker-compose restart",
+    "update:win32": "npm pack && copy yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz .\\data\\ && cd .\\data\\ && npm i yousolution-node-red-contrib-you-sap-service-layer-%npm_package_version%.tgz && docker-compose restart",
+    "update:default": "npm pack && mv yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz ./data && cd data && npm i yousolution-node-red-contrib-you-sap-service-layer-$npm_package_version.tgz && docker-compose restart",
     "test": "mocha 'test/**/*.spec.js'",
     "coverage": "nyc npm run test"
   },
@@ -56,6 +59,7 @@
     "node-red": "^2.1.4",
     "node-red-node-test-helper": "^0.2.7",
     "nyc": "^15.1.0",
+    "run-script-os": "^1.1.6",
     "sinon": "^12.0.1"
   }
 }
