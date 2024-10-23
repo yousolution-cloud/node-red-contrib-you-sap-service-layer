@@ -1,6 +1,9 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# [0.2.2] - 2024-10-23
+
+- Fix compatibility node-RED > 3.1.0
 
 # [0.2.0] - 2024-06-19
 

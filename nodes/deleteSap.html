@@ -1,72 +1,72 @@
 <script type="text/javascript">
-  RED.nodes.registerType('deleteSap',{
+  RED.nodes.registerType('deleteSap', {
     category: 'Sap',
     color: '#FFC300',
     defaults: {
-      name: {value: ''},
-      entity: {value: ''},
-      udo: {value: ''},
-      udt: {value: ''},
-      entityId: {value: ''},
-      docEntry: {value: ''},
-      code: {value: ''},
-      headers: {value: ''}
+      name: { value: '' },
+      entity: { value: '' },
+      udo: { value: '' },
+      udt: { value: '' },
+      entityId: { value: '' },
+      docEntry: { value: '', validate: (v) => true },
+      code: { value: '', validate: (v) => true },
+      headers: { value: '' },
     },
-    inputs:1,
-    outputs:1,
+    inputs: 1,
+    outputs: 1,
     icon: 'font-awesome/fa-trash',
-    label: function() {
-      return this.name||"Sap delete";
+    label: function () {
+      return this.name || 'Sap delete';
     },
-    oneditprepare: function() {
-      $("#node-input-entityId").typedInput({
-        type:"msg",
-        types:["msg"],
-        typeField: "#node-input-entityId-type",
-        value: 'entityId'
+    oneditprepare: function () {
+      $('#node-input-entityId').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-entityId-type',
+        value: 'entityId',
       });
 
-      $("#node-input-docEntry").typedInput({
-        type:"msg",
-        types:["msg"],
-        typeField: "#node-input-docEntry-type",
-        value: 'docEntry'
+      $('#node-input-docEntry').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-docEntry-type',
+        value: 'docEntry',
       });
 
-      $("#node-input-headers").typedInput({
-        type:"msg",
-        types:["msg"],
-        typeField: "#node-input-headers-type",
-        value: 'headers'
+      $('#node-input-headers').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-headers-type',
+        value: 'headers',
       });
 
-      jQuery("#node-input-entity").change(function() {
+      jQuery('#node-input-entity').change(function () {
         jQuery('#container-udo').hide();
         jQuery('#container-docEntry').hide();
         jQuery('#container-udt').hide();
         jQuery('#container-code').hide();
         jQuery('#container-entityId').show();
 
-        if (jQuery(this).val() === 'UDO'){ 
+        if (jQuery(this).val() === 'UDO') {
           jQuery('#container-udo').show();
           jQuery('#container-docEntry').show();
-        } 
-        if (jQuery(this).val() === 'UDT'){ 
+        }
+        if (jQuery(this).val() === 'UDT') {
           jQuery('#container-udt').show();
           jQuery('#container-code').show();
-        } 
-        if(jQuery(this).val() !== 'UDO' || jQuery(this).val() !== 'UDT') {
+        }
+        if (jQuery(this).val() !== 'UDO' || jQuery(this).val() !== 'UDT') {
           jQuery('#container-entityId').hide();
         }
       });
-    }
+    },
   });
 </script>
-  
+
 <script type="text/html" data-template-name="deleteSap">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name">
+    <input type="text" id="node-input-name" placeholder="Name" />
   </div>
 
   <div class="form-row">
@@ -277,131 +277,130 @@
 
   <div class="form-row" style="display:none" id="container-udo">
     <label for="node-input-udo"><i class="fa fa-gears"></i> UDO</label>
-    <input type="text" id="node-input-udo" placeholder="UDO Name">
+    <input type="text" id="node-input-udo" placeholder="UDO Name" />
   </div>
 
   <div class="form-row" style="display:none" id="container-udt">
     <label for="node-input-udt"><i class="fa fa-gears"></i> UDT</label>
-    <input type="text" id="node-input-udt" placeholder="UDT Name">
+    <input type="text" id="node-input-udt" placeholder="UDT Name" />
   </div>
 
   <div class="form-row" style="display:none" id="container-entityId">
     <label for="node-input-type"><i class="fa fa-key"></i> EntityId</label>
-    <input type="text" id="node-input-entityId">
-    <input type="hidden" id="node-input-entityId-type">
+    <input type="text" id="node-input-entityId" />
+    <input type="hidden" id="node-input-entityId-type" />
   </div>
 
   <div class="form-row" style="display:none" id="container-docEntry">
     <label for="node-input-type"><i class="fa fa-key"></i> DocEntry</label>
-    <input type="text" id="node-input-docEntry">
-    <input type="hidden" id="node-input-docEntry-type">
+    <input type="text" id="node-input-docEntry" />
+    <input type="hidden" id="node-input-docEntry-type" />
   </div>
 
   <div class="form-row" style="display:none" id="container-code">
     <label for="node-input-type"><i class="fa fa-key"></i> Code</label>
-    <input type="text" id="node-input-code">
-    <input type="hidden" id="node-input-code-type">
+    <input type="text" id="node-input-code" />
+    <input type="hidden" id="node-input-code-type" />
   </div>
 
   <div class="form-row">
     <label for="node-input-type"><i class="fa fa-gears"></i> Headers</label>
-    <input type="text" id="node-input-headers">
-    <input type="hidden" id="node-input-headers-type">
+    <input type="text" id="node-input-headers" />
+    <input type="hidden" id="node-input-headers-type" />
   </div>
 </script>
-  
+
 <!-- Documentation -->
 <script type="text/html" data-help-name="deleteSap">
   <p>Delete action</p>
-  
+
   <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>
+      Name
+      <span class="property-type">string</span>
+    </dt>
+    <dd>the node's name</dd>
+    <dt>
+      Entity
+      <span class="property-type">string</span>
+    </dt>
+    <dd>the entity name of SAP</dd>
+    <dt>
+      entityId
+      <span class="property-type">number | string</span>
+    </dt>
+    <dd>the id of the entity of SAP</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <ol class="node-ports">
+    <li>
+      Standard output
       <dl class="message-properties">
-          <dt>Name
-            <span class="property-type">string</span>
-          </dt>
-          <dd> the node's name </dd>
-          <dt>Entity
-            <span class="property-type">string</span>
-          </dt>
-          <dd> the entity name of SAP </dd>
-          <dt>entityId
-            <span class="property-type">number | string</span>
-          </dt>
-          <dd> the id of the entity of SAP </dd>
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>the standard output of the command.</dd>
       </dl>
-  
-   <h3>Outputs</h3>
-       <ol class="node-ports">
-           <li>Standard output
-               <dl class="message-properties">
-                   <dt>payload <span class="property-type">string</span></dt>
-                   <dd>the standard output of the command.</dd>
-               </dl>
-           </li>
-       </ol>
-  
+    </li>
+  </ol>
+
   <h3>Details</h3>
-      <p>this node is used to delete an entity of SAP.
-        See the examples to understand how to use it.
-      </p>
-      <!-- <p><code>msg.payload</code> is used as the payload of the published message.
+  <p>this node is used to delete an entity of SAP. See the examples to understand how to use it.</p>
+  <!-- <p><code>msg.payload</code> is used as the payload of the published message.
       If it contains an Object it will be converted to a JSON string before being sent.
       If it contains a binary Buffer the message will be published as-is.</p>
       <p>The topic used can be configured in the node or, if left blank, can be set
       by <code>msg.topic</code>.</p>
       <p>Likewise the QoS and retain values can be configured in the node or, if left
       blank, set by <code>msg.qos</code> and <code>msg.retain</code> respectively.</p> -->
-  
+
   <h3>References</h3>
-      <ul>
-          <li><a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a> - for more details </li>
-          <li><a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer">@yousolution-cloud/node-red-contrib-you-sap-service-layer</a> - the nodes github repository</li>
-      </ul>
-</script><!-- Documentation -->
+  <ul>
+    <li>
+      <a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a>
+      - for more details
+    </li>
+    <li>
+      <a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer"
+        >@yousolution-cloud/node-red-contrib-you-sap-service-layer</a
+      >
+      - the nodes github repository
+    </li>
+  </ul>
+</script>
+<!-- Documentation -->
 <script type="text/html" data-help-name="closeSap">
   <p>Close action</p>
-  
+
   <h3>Inputs</h3>
       <dl class="message-properties">
-          <dt>Name
-            <span class="property-type">string</span>
-          </dt>
-          <dd> the node's name </dd>
-          <dt>Entity
-            <span class="property-type">string</span>
-          </dt>
-          <dd> the entity name of SAP resource </dd>
-          <dt>entityId
-            <span class="property-type">number | string</span>
-          </dt>
-          <dd> the id of the entity of SAP resource </dd>
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>the standard output of the command.</dd>
       </dl>
-  
-   <h3>Outputs</h3>
-       <ol class="node-ports">
-           <li>Standard output
-               <dl class="message-properties">
-                   <dt>payload <span class="property-type">string</span></dt>
-                   <dd>the standard output of the command.</dd>
-               </dl>
-           </li>
-       </ol>
-  
+    </li>
+  </ol>
+
   <h3>Details</h3>
-      <p>this node is used to close the entity of SAP resource.
-        See the examples to understand how to use it.
-      </p>
-      <!-- <p><code>msg.payload</code> is used as the payload of the published message.
+  <p>this node is used to close the entity of SAP resource. See the examples to understand how to use it.</p>
+  <!-- <p><code>msg.payload</code> is used as the payload of the published message.
       If it contains an Object it will be converted to a JSON string before being sent.
       If it contains a binary Buffer the message will be published as-is.</p>
       <p>The topic used can be configured in the node or, if left blank, can be set
       by <code>msg.topic</code>.</p>
       <p>Likewise the QoS and retain values can be configured in the node or, if left
       blank, set by <code>msg.qos</code> and <code>msg.retain</code> respectively.</p> -->
-  
+
   <h3>References</h3>
-      <ul>
-          <li><a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a> - for more details </li>
-          <li><a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer">@yousolution-cloud/node-red-contrib-you-sap-service-layer</a> - the nodes github repository</li>
-      </ul>
+  <ul>
+    <li>
+      <a href="https://sap-samples.github.io/smb-summit-hackathon/b1sl.html" target="_black">Service layer API docs</a>
+      - for more details
+    </li>
+    <li>
+      <a href="https://github.com/yousolution-cloud/node-red-contrib-you-sap-service-layer"
+        >@yousolution-cloud/node-red-contrib-you-sap-service-layer</a
+      >
+      - the nodes github repository
+    </li>
+  </ul>
 </script>

@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   nodered:
-    image: nodered/node-red:3.1.0
+    image: nodered/node-red:3.1.9-18
     # network_mode: host
     extra_hosts:
-      - "api.yousolution.local:192.168.1.100"
+      - 'api.yousolution.local:192.168.1.100'
     volumes:
       - ./data:/data
     ports:
