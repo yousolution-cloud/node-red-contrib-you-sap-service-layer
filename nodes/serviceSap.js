@@ -16,11 +16,6 @@ module.exports = function (RED) {
       node.status({});
       try {
         const data = msg[config.bodyPost];
-        // if (!data) {
-        //   node.status({ fill: 'red', shape: 'dot', text: 'bodyPost must have value' });
-        //   done(new Error('bodyPost must have value'));
-        //   return;
-        // }
         const options = { method: 'POST', hasRawQuery: false, isService: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
