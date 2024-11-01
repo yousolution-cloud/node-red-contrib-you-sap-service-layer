@@ -1,6 +1,11 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+# [0.2.3] - 2024-11-01
+
+- Upgrade List on CloseSap Node 
+
 # [0.2.2] - 2024-10-23
 
 - Fix compatibility node-RED > 3.1.0
