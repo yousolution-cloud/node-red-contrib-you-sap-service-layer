@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.4] - 2024-11-07
+
+- Fix compatibility on serviceSap and manipulateEntitySap
+
 # [0.2.3] - 2024-11-01
 
 - Upgrade List on CloseSap Node 

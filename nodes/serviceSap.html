@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  let servicesName = [];
-  let servicesData = {};
+  let SAPSLservicesName = [];
+  let SAPSLservicesData = {};
     $.getJSON('services', (data, status) => {
       for(service in data) {
-        servicesData = data;
-        servicesName.push(service);
+        SAPSLservicesData = data;
+        SAPSLservicesName.push(service);
       }
     });
   RED.nodes.registerType('serviceSap',{
@@ -14,12 +14,6 @@
       name: {value: ''},
       serviceName: {value: ''},
       service: {value: ''},
-      // entity: {value: ''},
-      // udo: {value: ''},
-      // udt: {value: ''},
-      // entityId: {value: ''},
-      // docEntry: {value: ''},
-      // code: {value: ''},
       headers: {value: ''},
       bodyPost: {value: ''}
     },
@@ -30,27 +24,7 @@
       return this.name||"Sap service";
     },
     oneditprepare: function() {
-      // $("#node-input-entityId").typedInput({
-      //   type:"msg",
-      //   types:["msg"],
-      //   typeField: "#node-input-entityId-type",
-      //   value: 'entityId'
-      // });
-
-      // $("#node-input-docEntry").typedInput({
-      //   type:"msg",
-      //   types:["msg"],
-      //   typeField: "#node-input-docEntry-type",
-      //   value: 'docEntry'
-      // });
-
-      // $("#node-input-code").typedInput({
-      //   type:"msg",
-      //   types:["msg"],
-      //   typeField: "#node-input-code-type",
-      //   value: 'code'
-      // });
-
+  
       $("#node-input-headers").typedInput({
         type:"msg",
         types:["msg"],
@@ -65,27 +39,7 @@
         value: 'bodyPost'
       });
 
-      // jQuery("#node-input-entity").change(function() {
-      //   jQuery('#container-udo').hide();
-      //   jQuery('#container-docEntry').hide();
-      //   jQuery('#container-udt').hide();
-      //   jQuery('#container-code').hide();
-      //   jQuery('#container-entityId').hide();
-
-      //   if (jQuery(this).val() === 'UDO'){ 
-      //     jQuery('#container-udo').show();
-      //     jQuery('#container-docEntry').show();
-      //   } 
-      //   if (jQuery(this).val() === 'UDT'){ 
-      //     jQuery('#container-udt').show();
-      //     jQuery('#container-code').show();
-      //   } 
-      //   if(jQuery(this).val() !== 'UDO' && jQuery(this).val() !== 'UDT') {
-      //     jQuery('#container-entityId').show();
-      //   }
-      // });
-
-      servicesName.forEach((service) => {
+      SAPSLservicesName.forEach((service) => {
         $('#node-input-serviceName')
           .append($("<option></option>")
                       .attr("value", service)
@@ -103,8 +57,8 @@
 
         $('#node-input-service').empty();
 
-        if(servicesData[service]) {
-          servicesData[service].forEach((endpoint) => {
+        if(SAPSLservicesData[service]) {
+          SAPSLservicesData[service].forEach((endpoint) => {
           $('#node-input-service')
             .append($("<option></option>")
                         .attr("value", endpoint)
