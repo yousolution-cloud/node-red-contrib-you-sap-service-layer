@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.5] - 2025-01-16
+
+- Bug Fix NextLink Node on Manage Url Value
+
 # [0.2.4] - 2024-11-07
 
 - Fix compatibility on serviceSap and manipulateEntitySap
