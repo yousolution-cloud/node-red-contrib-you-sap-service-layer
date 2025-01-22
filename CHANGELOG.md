@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-# [0.2.6] - 2025-01-16
+# [0.2.7] - 2025-01-22
+
+- Change Manage Error ServiceLayer on ServiceSAP Node
+
+# [0.2.6] - 2025-01-18
 
 - Change Manage Empty Respose on ServiceSAP node
 
