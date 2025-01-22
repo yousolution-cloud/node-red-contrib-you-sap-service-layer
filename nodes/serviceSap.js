@@ -19,7 +19,7 @@ module.exports = function (RED) {
         const options = { method: 'POST', hasRawQuery: false, isService: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = VerifyErrorSL(node, msg, result.data);//result.data;
+        msg.payload = VerifyErrorSL(node, msg, result.data, true);//result.data;
         msg.statusCode = result.status;
         if(msg.payload) {
           node.status({ fill: 'green', shape: 'dot', text: 'success' });
