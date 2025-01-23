@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.8] - 2025-01-22
+
+- Added error handling configuration from library or manual on ServiceSAP Node
+
 # [0.2.7] - 2025-01-22
 
 - Change Manage Error ServiceLayer on ServiceSAP Node
