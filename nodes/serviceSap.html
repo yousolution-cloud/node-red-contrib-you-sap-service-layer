@@ -15,7 +15,8 @@
       serviceName: {value: ''},
       service: {value: ''},
       headers: {value: ''},
-      bodyPost: {value: ''}
+      bodyPost: {value: ''},
+      manageError: {value: true}
     },
     inputs:1,
     outputs:1,
@@ -105,6 +106,10 @@
     <input type="text" id="node-input-bodyPost">
     <input type="hidden" id="node-input-bodyPost-type">
   </div>
+  <div class="form-row">
+    <label for="node-input-type"><i class="fa fa-cog"></i> Manage Error</label>
+    <input type="checkbox" id="node-input-manageError">
+  </div>
 </script>
   
 <!-- Documentation -->
@@ -129,6 +134,10 @@
             <span class="property-type">object</span>
           </dt>
           <dd> data to update to the entity </dd>
+          <dt>MangerError
+            <span class="property-type">Bool</span>
+          </dt>
+          <dd> Set Manage Error Respone on Library</dd>
       </dl>
   
    <h3>Outputs</h3>

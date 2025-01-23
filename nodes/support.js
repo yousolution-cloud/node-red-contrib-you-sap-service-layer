@@ -87,7 +87,7 @@ async function login(node, idAuth) {
   return await axiosLibrary(options);
 }
 
-async function sendRequest({ node, msg, config, axios, login, options }) {
+async function sendRequest({ node, msg, config, axios, login, options }, manageError=true) {
   if (!node || !msg || !config || !axios || !login) {
     const missingParams = [];
     node ? null : missingParams.push('node');
@@ -102,7 +102,13 @@ async function sendRequest({ node, msg, config, axios, login, options }) {
     return await axios(requestOptions.axiosOptions);
   } catch (error) {
     // Refresh headers re-login
-    if (error.response && (error.response.status == 401 || error.response.status == 301)) {
+    if(!manageError){
+      msg.statusCode = error.response.status;
+      msg.requestUrl = requestOptions.axiosOptions.url;
+      msg.payload = error.response.data;
+      return error.response.data;
+    }
+    else if (error.response && (error.response.status == 401 || error.response.status == 301)) {
       const globalCotext = node.context().global;
       // try {
       // update cookies for session timeout
@@ -130,12 +136,16 @@ async function sendRequest({ node, msg, config, axios, login, options }) {
       }
       // }
     }
-    if (error.response && error.response.data) {
+    else if (error.response && error.response.data) {
       msg.statusCode = error.response.status;
       msg.payload = error.response.data;
       msg.requestUrl = requestOptions.axiosOptions.url;
-      //node.send(msg);
-      node.error(JSON.stringify(error.response.data), msg)
+      if(!manageError){
+        node.send(msg);
+      }
+      else {
+        node.error(JSON.stringify(error.response.data), msg)
+      }
      // throw new Error(JSON.stringify(error.response.data));
     }
     else {
