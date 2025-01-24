@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  let entities = [];
-  let entitiesData = {};
+  let SAPSLentities = [];
+  let SAPSLentitiesData = {};
     $.getJSON('entities', (data, status) => {
       for(entity in data) {
-        entitiesData = data;
-        entities.push(entity);
+        SAPSLentitiesData = data;
+        SAPSLentities.push(entity);
       }
     });
   RED.nodes.registerType('manipulateEntitySap',{
@@ -26,7 +26,7 @@
     },
     oneditprepare: function() {
 
-      entities.forEach((entity) => {
+      SAPSLentities.forEach((entity) => {
         $('#node-input-entity')
           .append($("<option></option>")
                       .attr("value", entity)
@@ -44,8 +44,8 @@
 
         $('#node-input-manipulateMethod').empty();
 
-        if(entitiesData[entity]) {
-          entitiesData[entity].forEach((endpoint) => {
+        if(SAPSLentitiesData[entity]) {
+          SAPSLentitiesData[entity].forEach((endpoint) => {
           $('#node-input-manipulateMethod')
             .append($("<option></option>")
                         .attr("value", endpoint)

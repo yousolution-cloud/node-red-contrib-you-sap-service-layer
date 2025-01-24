@@ -18,16 +18,34 @@ module.exports = function (RED) {
         const data = msg[config.bodyPost];
         const options = { method: 'POST', hasRawQuery: false, isService: true, data: data };
         const login = Support.login;
-        const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = VerifyErrorSL(node, msg, result.data);//result.data;
-        msg.statusCode = result.status;
-        if(msg.payload) {
-          node.status({ fill: 'green', shape: 'dot', text: 'success' });
+
+        const result = await Support.sendRequest({ node, msg, config, axios, login, options }, config.manageError);
+        if(config.manageError) {
+          msg.payload = VerifyErrorSL(node, msg, result.data, true);//result.data;
+          msg.statusCode = result.status;
+          if(result.status < 299) {
+            node.status({ fill: 'green', shape: 'dot', text: 'success' });
+            node.send(msg);
+          }
+        }
+        else {
+          msg.payload = result;
+          node.status({ fill: 'gray', shape: 'dot', text: 'Response Request' });
           node.send(msg);
         }
+       
       } catch (error) {
-        node.status({ fill: 'red', shape: 'dot', text: 'Error' });
-        done(error);
+        if(!config.manageError) {
+          msg.payload = result;
+          node.status({ fill: 'gray', shape: 'dot', text: 'Response Request' });
+          node.send(msg);
+        } 
+        else {
+          node.status({ fill: 'red', shape: 'dot', text: 'Error' });
+          done(error);
+        }
+
+       
       }
     });
   }

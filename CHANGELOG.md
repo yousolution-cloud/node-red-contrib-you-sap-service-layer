@@ -1,6 +1,31 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+# [0.2.8] - 2025-01-22
+
+- Added error handling configuration from library or manual on ServiceSAP Node
+
+# [0.2.7] - 2025-01-22
+
+- Change Manage Error ServiceLayer on ServiceSAP Node
+
+# [0.2.6] - 2025-01-18
+
+- Change Manage Empty Respose on ServiceSAP node
+
+# [0.2.5] - 2025-01-16
+
+- Bug Fix NextLink Node on Manage Url Value
+
+# [0.2.4] - 2024-11-07
+
+- Fix compatibility on serviceSap and manipulateEntitySap
+
+# [0.2.3] - 2024-11-01
+
+- Upgrade List on CloseSap Node 
+
 # [0.2.2] - 2024-10-23
 
 - Fix compatibility node-RED > 3.1.0
