@@ -50,9 +50,17 @@ module.exports = function (RED) {
 
       }
 
-      // If User setted from msg
+
+      //If User setted from msg
       if (node.credentials.userType == 'msg') {
         const user = msg[node.credentials.user];
+        let currentUser = globalContext.get(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`);
+        
+        if(user !== currentUser) {
+          console.log('Reset User');
+          globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, null);
+        }
+
         globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`, user);
       }
 
