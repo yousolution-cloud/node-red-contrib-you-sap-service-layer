@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.9] - 2025-02-19
+
+- Added Manage Dynamic User on Autentication Service Layer
+
 # [0.2.8] - 2025-01-22
 
 - Added error handling configuration from library or manual on ServiceSAP Node

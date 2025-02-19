@@ -1,6 +1,6 @@
 {
   "name": "@yousolution/node-red-contrib-you-sap-service-layer",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Unofficial module SAP Service Layer for NODE-RED",
   "license": "MIT",
   "scripts": {
