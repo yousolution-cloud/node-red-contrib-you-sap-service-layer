@@ -7,11 +7,14 @@
       entity: { value: '' },
       udo: { value: '' },
       udt: { value: '' },
-      entityId: { value: '' },
+      entityId:  { value: '', validate: (v) => true },
       docEntry: { value: '', validate: (v) => true },
       code: { value: '', validate: (v) => true },
       headers: { value: '' },
       query: { value: 'query={};' },
+      AlternateCatNumItemId: { value: '', validate: (v) => true },
+      AlternateCatNumCardCodeId: { value: '', validate: (v) => true },
+      AlternateCatNumSubstituteId: { value: '', validate: (v) => true },
     },
     inputs: 1,
     outputs: 1,
@@ -25,6 +28,27 @@
         types: ['msg'],
         typeField: '#node-input-entityId-type',
         value: 'entityId',
+      });
+
+      $('#node-input-AlternateCatNumItemId').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-AlternateCatNumItemId-type',
+        value: 'AlternateCatNumItemId',
+      });
+
+      $('#node-input-AlternateCatNumCardCodeId').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-AlternateCatNumCardCodeId-type',
+        value: 'AlternateCatNumCardCodeId',
+      });
+
+      $('#node-input-AlternateCatNumSubstituteId').typedInput({
+        type: 'msg',
+        types: ['msg'],
+        typeField: '#node-input-AlternateCatNumSubstituteId-type',
+        value: 'AlternateCatNumSubstituteId',
       });
 
       $('#node-input-docEntry').typedInput({
@@ -69,7 +93,12 @@
           jQuery('#container-udt').show();
           jQuery('#container-code').show();
         }
-        if (jQuery(this).val() !== 'UDO' && jQuery(this).val() !== 'UDT') {
+        if (jQuery(this).val() === 'AlternateCatNum') {
+          jQuery('#container-AlternateCatNumItemId').show();
+          jQuery('#container-AlternateCatNumCardCodeId').show();
+          jQuery('#container-AlternateCatNumSubstituteId').show();
+        }
+        if (jQuery(this).val() !== 'UDO' && jQuery(this).val() !== 'UDT' && jQuery(this).val() !== 'AlternateCatNum') {
           jQuery('#container-entityId').show();
         }
       });
@@ -118,6 +147,7 @@
       <option value="AssetTransfer">AssetTransfer</option>
       <option value="Attachments2">Attachments2</option>
       <option value="AttributeGroups">AttributeGroups</option>
+      <option value="AlternateCatNum">AlternateCatNum</option>
       <option value="BankChargesAllocationCodes">BankChargesAllocationCodes</option>
       <option value="Banks">Banks</option>
       <option value="BankStatements">BankStatements</option>
@@ -364,6 +394,24 @@
     <input type="text" id="node-input-entityId" />
     <input type="hidden" id="node-input-entityId-type" />
   </div>
+
+   <!-- Init Section for Manage Special Case AlternateCatNum-->
+   <div class="form-row" style="display:none" id="container-AlternateCatNumItemId">
+    <label for="node-input-type"><i class="fa fa-key"></i> ItemCode</label>
+    <input type="text" id="node-input-AlternateCatNumItemId" />
+    <input type="hidden" id="node-input-AlternateCatNumItemId-type" />
+  </div>
+  <div class="form-row" style="display:none" id="container-AlternateCatNumCardCodeId">
+    <label for="node-input-type"><i class="fa fa-key"></i> CardCode</label>
+    <input type="text" id="node-input-AlternateCatNumCardCodeId" />
+    <input type="hidden" id="node-input-AlternateCatNumCardCodeId-type" />
+  </div>
+  <div class="form-row" style="display:none" id="container-AlternateCatNumSubstituteId">
+    <label for="node-input-type"><i class="fa fa-key"></i> Substitute</label>
+    <input type="text" id="node-input-AlternateCatNumSubstituteId" />
+    <input type="hidden" id="node-input-AlternateCatNumSubstituteId-type" />
+  </div>
+  <!-- End Section for Manage Special Case AlternateCatNum-->
 
   <div class="form-row" style="display:none" id="container-docEntry">
     <label for="node-input-type"><i class="fa fa-key"></i> DocEntry</label>

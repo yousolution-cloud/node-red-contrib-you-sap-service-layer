@@ -245,6 +245,9 @@ function generateRequest(node, msg, config, options) {
 
   if (options.hasEntityId) {
     let entityId = msg[config.entityId];
+    if (!entityId && config.entity != 'UDO' && config.entity != 'UDT' && config.entity != 'AlternateCatNum') {
+      throw new Error('Missing entityId');
+    }
     if (!entityId && config.entity != 'UDO' && config.entity != 'UDT') {
       throw new Error('Missing entityId');
     }
@@ -265,7 +268,14 @@ function generateRequest(node, msg, config, options) {
     }
 
     if (thickIdApi.includes(entity) || config.entity === 'UDT') {
-      if(Number.isInteger(entityId)){
+      if(entity === 'AlternateCatNum') { // Manage Special Case AlternateCatNum
+        let ItemCode = msg[config.AlternateCatNumItemId];
+        let CardCode = msg[config.AlternateCatNumCardCodeId];
+        let Substitute = msg[config.AlternateCatNumSubstituteId]
+        url = `https://${host}:${port}/b1s/${version}/${entity}(ItemCode='${ItemCode}', CardCode='${CardCode}', Substitute='${Substitute}')`;
+
+      }
+      else if(Number.isInteger(entityId)){
         url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
       }
       else {
