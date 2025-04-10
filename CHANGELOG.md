@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.10] - 2025-03-20
+
+- Add Manage AlternateCatNum on LayerOne2SL Get / List / Create / Delete / Update
+
 # [0.2.9] - 2025-02-19
 
 - Added Manage Dynamic User on Autentication Service Layer
