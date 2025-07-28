@@ -6,9 +6,9 @@
       name: { value: '' },
       method: { value: 'PATCH' },
       entity: { value: '' },
-      udo: { value: '' },
-      udt: { value: '' },
-      entityId: { value: '' },
+      udo: { value: '',  validate: (v) => true },
+      udt: { value: '',  validate: (v) => true },
+      entityId: { value: '',  validate: (v) => true  },
       docEntry: {
         value: '',
         validate: (v) => true,
