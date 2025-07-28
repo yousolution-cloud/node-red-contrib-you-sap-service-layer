@@ -18,8 +18,10 @@ module.exports = function (RED) {
         const data = msg[config.bodyPost];
         const options = { method: 'POST', hasRawQuery: false, isService: true, data: data };
         const login = Support.login;
-
+        //config.nextLink = "nextLink";
         const result = await Support.sendRequest({ node, msg, config, axios, login, options }, config.manageError);
+        msg.nextLink = result.data['odata.nextLink'] || result.data['@odata.nextLink'];
+
         if(config.manageError) {
           msg.payload = VerifyErrorSL(node, msg, result.data, true);//result.data;
           msg.statusCode = result.status;

@@ -14,11 +14,20 @@ module.exports = function (RED) {
         } else if (nextLink.includes('/b1s/v1/')) {
           msg.nextLink = nextLink.replace('/b1s/v1/', "").trim();
           node.log('NextLink Replace SL SetUp /b1s/v1/');
-        } else {
+        } 
+        else {
           node.log('NextLink OK for SL');
         }
-      }
 
+
+        if(msg.nextLink.includes('QueryService_PostQuery') ){  // Specific for QueryService_PostQuery 
+          // msg.nextLink = nextLink.replace('/b1s/v2/', "").trim();
+          // msg.nextLink = nextLink.replace('/b1s/v1/', "").trim();
+          msg.nextLink = msg.nextLink.replace('QueryService_PostQuery?', "").trim();
+        }
+
+
+      }
 
       if (!nextLink) {
         node.send([null, msg]);
