@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 - Add Manage NextLink on ServiceNode
 > the node ServiceNode does *not manage “NextLink” directly* as it is very case-dependent, the property is provided and *delegated to the flow for management*
+- Bug fix view on PatchSAP Node
 
 # [0.2.10] - 2025-03-20
 
