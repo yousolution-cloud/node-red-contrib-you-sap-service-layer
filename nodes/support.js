@@ -251,7 +251,9 @@ function generateRequest(node, msg, config, options) {
     if (!entityId && config.entity != 'UDO' && config.entity != 'UDT') {
       throw new Error('Missing entityId');
     }
+    
     const docEntry = msg[config.docEntry];
+
     if (config.entity == 'UDO') {
       if (!docEntry) {
         throw new Error('Missing docEntry');
