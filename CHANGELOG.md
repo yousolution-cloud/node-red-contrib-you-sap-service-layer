@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.12] - 2025-08-05
+
+- Bug Fix on DeleteSAP node for manage Drafts cancelation 
+
 # [0.2.11] - 2025-07-28
 
 - Add Manage NextLink on ServiceNode
