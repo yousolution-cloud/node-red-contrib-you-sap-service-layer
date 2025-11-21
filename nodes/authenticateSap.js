@@ -61,7 +61,6 @@ module.exports = function (RED) {
 
       }
 
-
       //If User setted from msg
       if (node.credentials.userType == 'msg') {
         const user = msg[node.credentials.user];

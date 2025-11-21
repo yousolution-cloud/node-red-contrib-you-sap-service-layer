@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.13] - 2025-11-21
+
+- Add Manage Static Additional Header on Nodes from Login Configuration 
+
+
 # [0.2.12] - 2025-08-05
 
 - Bug Fix on DeleteSAP node for manage Drafts cancelation 
