@@ -72,6 +72,7 @@ async function login(node, idAuth) {
   const url = `https://${host}:${port}/b1s/${version}/Login`;
 
   const credentials = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.credentials`);
+  const staticHeaders = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.staticHeaders`);
   const dataString = JSON.stringify(credentials);
 
   const options = {
@@ -80,6 +81,7 @@ async function login(node, idAuth) {
     rejectUnauthorized: false,
     data: credentials,
     headers: {
+      ...staticHeaders,
       'Content-Type': 'application/json',
       'Content-Length': dataString.length,
     },
@@ -181,7 +183,7 @@ function generateRequest(node, msg, config, options) {
   options.service = options.service || null;
   options.manipulateMethod = options.manipulateMethod || null;
 
-  const { idAuthNode, host, port, version, cookies } = getSapParams(node, msg, config);
+  const { idAuthNode, host, port, version, cookies, staticHeaders } = getSapParams(node, msg, config);
 
   let rawQuery = null;
   let url;
@@ -251,7 +253,9 @@ function generateRequest(node, msg, config, options) {
     if (!entityId && config.entity != 'UDO' && config.entity != 'UDT') {
       throw new Error('Missing entityId');
     }
+    
     const docEntry = msg[config.docEntry];
+
     if (config.entity == 'UDO') {
       if (!docEntry) {
         throw new Error('Missing docEntry');
@@ -326,8 +330,9 @@ function generateRequest(node, msg, config, options) {
   }
 
   // const cookies = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
-  const headers = { ...msg[config.headers], Cookie: cookies };
+  const headers = { ...staticHeaders , ...msg[config.headers], Cookie: cookies };
 
+  console.log('Headers:', headers);
   let axiosOptions = {
     method: options.method,
     url: url,
@@ -354,13 +359,13 @@ function getSapParams(node, msg) {
     const host = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.host`);
     const port = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.port`);
     const version = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.version`);
-
+    const staticHeaders = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.staticHeaders`);
     // if (!flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`)) {
     //   throw new Error('Authentication failed');
     // }
     const cookies = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
 
-    return { idAuthNode: idAuthNode, host: host, port: port, version: version, cookies: cookies };
+    return { idAuthNode: idAuthNode, host: host, port: port, version: version, cookies: cookies, staticHeaders: staticHeaders };
   } catch (error) {
     throw new Error('Authentication failed');
   }

@@ -9,12 +9,23 @@ module.exports = function (RED) {
     // reset status
     node.status({});
 
+    let ConfigsHeaders = config.headers ? config.headers.reduce((acc, header) => {
+    // Se keyValue è vuoto, usa keyType come chiave
+    const key = header.keyValue === "" ? header.keyType : header.keyValue;
+    const value = header.valueValue;
+    
+    acc[key] = value;
+    return acc;
+    }, {}) : {};
+
+
     const globalContext = node.context().global;
 
     globalContext.set(`_YOU_SapServiceLayer_${node.id}`, {
       host: config.host,
       port: config.port,
       version: config.version,
+      staticHeaders: ConfigsHeaders,
       credentials: {
         CompanyDB: node.credentials.company,
         UserName: node.credentials.user,
@@ -50,17 +61,14 @@ module.exports = function (RED) {
 
       }
 
-
       //If User setted from msg
       if (node.credentials.userType == 'msg') {
         const user = msg[node.credentials.user];
         let currentUser = globalContext.get(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`);
         
         if(user !== currentUser) {
-          console.log('Reset User');
           globalContext.set(`_YOU_SapServiceLayer_${node.id}.headers`, null);
         }
-
         globalContext.set(`_YOU_SapServiceLayer_${node.id}.credentials.UserName`, user);
       }
 
@@ -88,7 +96,6 @@ module.exports = function (RED) {
         let minutesDifference = timeDifference / (1000 * 60);
         validToken = minutesDifference > 25 ? false : true;
       }
-
 
       if (!headers  || !validToken) {
         try {
@@ -132,6 +139,7 @@ module.exports = function (RED) {
       user: { type: 'text' },
       userType: { type: 'text' },
       password: { type: 'password' },
+      headers: {},
     },
   });
 };
