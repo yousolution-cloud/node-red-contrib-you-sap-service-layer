@@ -88,6 +88,7 @@
     color: '#FFC300',
     defaults: {
       name: {value: ''},
+      protocall: {value: 'https'},
       host: {value: ''},
       port: {value: ''},
       version: {value: ''},
@@ -224,6 +225,14 @@
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+ <div class="form-row">
+        <label for="node-input-protocall"><i class="fa fa-cog"></i> Protocall</label>
+        <select name="node-input-protocall" id="node-input-protocall">
+          <option value="http">HTTP</option>
+          <option value="https">HTTPS</option>
+        </select>
   </div>
 
   <div class="form-row">

@@ -23,6 +23,7 @@ module.exports = function (RED) {
 
     globalContext.set(`_YOU_SapServiceLayer_${node.id}`, {
       host: config.host,
+      protocall : config.protocall,
       port: config.port,
       version: config.version,
       staticHeaders: ConfigsHeaders,

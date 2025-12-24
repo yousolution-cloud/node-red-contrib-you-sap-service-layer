@@ -66,11 +66,11 @@ async function login(node, idAuth) {
   const globalContext = node.context().global;
 
   const host = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.host`);
+  const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.protocall`); 
   const port = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.port`);
   const version = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.version`);
 
-  const url = `https://${host}:${port}/b1s/${version}/Login`;
-
+  const url = `${protocall}://${host}:${port}/b1s/${version}/Login`;
   const credentials = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.credentials`);
   const staticHeaders = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.staticHeaders`);
   const dataString = JSON.stringify(credentials);
@@ -183,7 +183,7 @@ function generateRequest(node, msg, config, options) {
   options.service = options.service || null;
   options.manipulateMethod = options.manipulateMethod || null;
 
-  const { idAuthNode, host, port, version, cookies, staticHeaders } = getSapParams(node, msg, config);
+  const { idAuthNode, host, protocall, port, version, cookies, staticHeaders } = getSapParams(node, msg, config);
 
   let rawQuery = null;
   let url;
@@ -218,28 +218,28 @@ function generateRequest(node, msg, config, options) {
   if (entity == 'script') {
     const partnerName = config.partnerName;
     const scriptName = config.scriptName;
-    url = `https://${host}:${port}/b1s/${version}/${entity}/${partnerName}/${scriptName}`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/${entity}/${partnerName}/${scriptName}`;
   }
 
   const odataNextLink = msg[config.nextLink];
 
   if (!odataNextLink) {
-    url = `https://${host}:${port}/b1s/${version}/${entity}`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/${entity}`;
   }
 
   if (options.isCrossJoin) {
-    url = `https://${host}:${port}/b1s/${version}/$crossjoin(${entity})`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/$crossjoin(${entity})`;
   }
 
   if (options.isSQLQuery) {
     if (!config.sqlCode) {
       throw new Error('Missing sqlCode');
     }
-    url = `https://${host}:${port}/b1s/${version}/SQLQueries('${msg[config.sqlCode]}')/List`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/SQLQueries('${msg[config.sqlCode]}')/List`;
   }
 
   if (odataNextLink) {
-    url = `https://${host}:${port}/b1s/${version}/${odataNextLink}`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/${odataNextLink}`;
   }
   if (options.isClose && !options.hasEntityId) {
     throw new Error(`The options are not correct. If 'isClose' is true then 'hasEntityId' must be true.`);
@@ -276,18 +276,18 @@ function generateRequest(node, msg, config, options) {
         let ItemCode = msg[config.AlternateCatNumItemId];
         let CardCode = msg[config.AlternateCatNumCardCodeId];
         let Substitute = msg[config.AlternateCatNumSubstituteId]
-        url = `https://${host}:${port}/b1s/${version}/${entity}(ItemCode='${ItemCode}', CardCode='${CardCode}', Substitute='${Substitute}')`;
+        url = `${protocall}://${host}:${port}/b1s/${version}/${entity}(ItemCode='${ItemCode}', CardCode='${CardCode}', Substitute='${Substitute}')`;
 
       }
       else if(Number.isInteger(entityId)){
-        url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
+        url = `${protocall}://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
       }
       else {
-        url = `https://${host}:${port}/b1s/${version}/${entity}('${entityId}')`;
+        url = `${protocall}://${host}:${port}/b1s/${version}/${entity}('${entityId}')`;
       }
       
     } else {
-      url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
+      url = `${protocall}://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
     }
 
     if (options.isClose) {
@@ -299,15 +299,15 @@ function generateRequest(node, msg, config, options) {
         throw new Error('Missing method');
       }
       if (thickIdApi.includes(entity)) {
-        url = `https://${host}:${port}/b1s/${version}/${entity}('${entityId}')/${config.manipulateMethod}`;
+        url = `${protocall}://${host}:${port}/b1s/${version}/${entity}('${entityId}')/${config.manipulateMethod}`;
       } else {
-        url = `https://${host}:${port}/b1s/${version}/${entity}(${entityId})/${config.manipulateMethod}`;
+        url = `${protocall}://${host}:${port}/b1s/${version}/${entity}(${entityId})/${config.manipulateMethod}`;
       }
     }
   }
 
   if (config.service) {
-    url = `https://${host}:${port}/b1s/${version}/${config.service}`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/${config.service}`;
   }
 
   if (options.isCreateSQLQuery) {
@@ -320,7 +320,7 @@ function generateRequest(node, msg, config, options) {
     if (!config.sqlText) {
       throw new Error('Missing sqlText');
     }
-    url = `https://${host}:${port}/b1s/${version}/SQLQueries`;
+    url = `${protocall}://${host}:${port}/b1s/${version}/SQLQueries`;
   }
 
   if (rawQuery && !odataNextLink) {
@@ -332,7 +332,6 @@ function generateRequest(node, msg, config, options) {
   // const cookies = flowContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
   const headers = { ...staticHeaders , ...msg[config.headers], Cookie: cookies };
 
-  console.log('Headers:', headers);
   let axiosOptions = {
     method: options.method,
     url: url,
@@ -357,6 +356,7 @@ function getSapParams(node, msg) {
 
     const idAuthNode = msg._YOU_SapServiceLayer.idAuth;
     const host = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.host`);
+     const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.protocall`); 
     const port = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.port`);
     const version = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.version`);
     const staticHeaders = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.staticHeaders`);
@@ -365,7 +365,7 @@ function getSapParams(node, msg) {
     // }
     const cookies = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.headers`).join(';');
 
-    return { idAuthNode: idAuthNode, host: host, port: port, version: version, cookies: cookies, staticHeaders: staticHeaders };
+    return { idAuthNode: idAuthNode, host: host, protocall: protocall, port: port, version: version, cookies: cookies, staticHeaders: staticHeaders };
   } catch (error) {
     throw new Error('Authentication failed');
   }
@@ -377,12 +377,4 @@ module.exports = {
   sendRequest: sendRequest,
   thickIdApi: thickIdApi,
 };
-// if (process.env.NODE_ENV === 'test') {
-//   console.log('TEST');
-//   module.exports = {
-//     login: login,
-//     generateRequest: generateRequest,
-//     sendRequest: sendRequest,
-//     thickIdApi: thickIdApi,
-//   };
-// }
+
