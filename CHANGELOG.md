@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.14] - 2025-12-24
+
+- Bug Fix Auth Protocall
+
+
 # [0.2.13] - 2025-11-21
 
 - Add Manage Static Additional Header on Nodes from Login Configuration 
