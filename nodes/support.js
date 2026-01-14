@@ -66,7 +66,7 @@ async function login(node, idAuth) {
   const globalContext = node.context().global;
 
   const host = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.host`);
-  const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.protocall`); 
+  const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.protocall`);
   const port = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.port`);
   const version = globalContext.get(`_YOU_SapServiceLayer_${idAuth}.version`);
 
@@ -214,6 +214,9 @@ function generateRequest(node, msg, config, options) {
   if (entity == 'UDT') {
     entity = config.udt;
   }
+  if (entity == 'VIEW') {
+    entity = `view.svc/${config.view}`;
+  }
 
   if (entity == 'script') {
     const partnerName = config.partnerName;
@@ -253,7 +256,7 @@ function generateRequest(node, msg, config, options) {
     if (!entityId && config.entity != 'UDO' && config.entity != 'UDT') {
       throw new Error('Missing entityId');
     }
-    
+
     const docEntry = msg[config.docEntry];
 
     if (config.entity == 'UDO') {
@@ -285,7 +288,7 @@ function generateRequest(node, msg, config, options) {
       else {
         url = `${protocall}://${host}:${port}/b1s/${version}/${entity}('${entityId}')`;
       }
-      
+
     } else {
       url = `${protocall}://${host}:${port}/b1s/${version}/${entity}(${entityId})`;
     }
@@ -356,7 +359,7 @@ function getSapParams(node, msg) {
 
     const idAuthNode = msg._YOU_SapServiceLayer.idAuth;
     const host = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.host`);
-     const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.protocall`); 
+     const protocall = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.protocall`);
     const port = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.port`);
     const version = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.version`);
     const staticHeaders = globalContext.get(`_YOU_SapServiceLayer_${idAuthNode}.staticHeaders`);
