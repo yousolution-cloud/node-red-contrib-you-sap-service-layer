@@ -22,7 +22,8 @@ module.exports = function (RED) {
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
         msg.payload = VerifyErrorSL(node, msg, result.data, true);// result.data;
         msg.statusCode = result.status;
-        if(msg.payload) {
+        if(msg.statusCode <= 299) {
+          msg.payload = true;
           node.status({ fill: 'green', shape: 'dot', text: 'success' });
           node.send(msg);
         }
