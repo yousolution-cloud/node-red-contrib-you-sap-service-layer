@@ -25,12 +25,15 @@ module.exports = function (RED) {
         const options = { method: 'POST', hasRawQuery: false, hasEntityId: true, isManipulate: true, data: data };
         const login = Support.login;
         const result = await Support.sendRequest({ node, msg, config, axios, login, options });
-        msg.payload = VerifyErrorSL(node, msg, result.data);//result.data;
+        msg.payload = VerifyErrorSL(node, msg, result.data, true);//result.data;
         msg.statusCode = result.status;
-        if(msg.payload) {
+        
+        if(msg.statusCode <= 299) {
+          msg.payload = true;
           node.status({ fill: 'green', shape: 'dot', text: 'success' });
           node.send(msg);
         }
+       
       } catch (error) {
         node.status({ fill: 'red', shape: 'dot', text: 'Error' });
         done(error);
