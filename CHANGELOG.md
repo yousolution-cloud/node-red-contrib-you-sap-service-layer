@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.2.15] - 2026-03-16
+
+- Bug Fix Response Manager on Service SAP
+
+
 # [0.2.14] - 2025-12-24
 
 - Bug Fix Auth Protocall
